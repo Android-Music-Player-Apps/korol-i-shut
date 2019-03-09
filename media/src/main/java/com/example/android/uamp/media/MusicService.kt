@@ -85,7 +85,7 @@ class MusicService : androidx.media.MediaBrowserServiceCompat() {
     private var isForegroundService = false
 
     private val remoteJsonSource: Uri =
-            Uri.parse("https://storage.googleapis.com/uamp/catalog.json")
+            Uri.parse("https://firebasestorage.googleapis.com/v0/b/korol-i-shut.appspot.com/o/catalog.json?alt=media")
 
     private val uAmpAudioAttributes = AudioAttributes.Builder()
             .setContentType(C.CONTENT_TYPE_MUSIC)
