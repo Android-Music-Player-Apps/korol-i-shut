@@ -22,9 +22,11 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion rootProject.compileSdkVersion
     defaultConfig {
-        applicationId "com.example.android.uamp.next"
+        applicationId "com.olehka.korolishut"
         versionCode 1
         versionName "1.0"
+        setProperty("archivesBaseName", "korolishut" + "-v" + versionCode + "(" + versionName + ")")
+
 
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
