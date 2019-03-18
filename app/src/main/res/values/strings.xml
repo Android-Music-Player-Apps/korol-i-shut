@@ -20,6 +20,10 @@
     <string name="skip_forward_10s">Skip forward 10s</string>
     <string name="play">Play</string>
     <string name="pause">Pause</string>
-
     <string name="menu_music_queue">Queue</string>
+
+    <string name="albums">Альбомы</string>
+    <string name="official_site">Официальный сайт</string>
+    <string name="wiki_info">Инфо на Википедии</string>
+    <string name="about_developer">О разработчике</string>
 </resources>

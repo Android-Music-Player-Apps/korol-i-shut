@@ -18,7 +18,6 @@ package com.example.android.uamp
 
 import android.media.AudioManager
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.android.uamp.media.MusicService
@@ -26,12 +25,18 @@ import com.example.android.uamp.utils.Event
 import com.example.android.uamp.utils.InjectorUtils
 import com.example.android.uamp.viewmodels.MainActivityViewModel
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : DrawerActivity() {
+
     private lateinit var viewModel: MainActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setToolbar()
+
+        drawerLayout = findViewById(R.id.drawer_layout)
+        navigationView = findViewById(R.id.nav_view)
+        setNavigationView()
 
         // Since UAMP is a music player, the volume controls should adjust the music volume while
         // in the app.
@@ -62,6 +67,11 @@ class MainActivity : AppCompatActivity() {
                 navigateToMediaItem(mediaId)
             }
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setNavigationItemSelected(0)
     }
 
     private fun navigateToMediaItem(mediaId: String) {
