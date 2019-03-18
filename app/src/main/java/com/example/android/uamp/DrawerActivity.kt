@@ -1,20 +1,38 @@
 package com.example.android.uamp
 
 import android.content.Intent
+import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.ShareActionProvider
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ShareCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.MenuItemCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 
 const val KEY_URI = "key_uri"
+const val URL_TO_SHARE = "https://play.google.com/store/apps/details?id=com.olehka.korolishut"
 
 abstract class DrawerActivity : AppCompatActivity() {
 
+    private var shareActionProvider: ShareActionProvider? = null
+
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationView: NavigationView
+
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+        menu.findItem(R.id.share).also {
+            shareActionProvider = MenuItemCompat.getActionProvider(it) as ShareActionProvider?
+        }
+        val shareIntent = ShareCompat.IntentBuilder.from(this)
+                .setType("text/plain").setText(URL_TO_SHARE).intent
+        shareActionProvider?.setShareIntent(shareIntent)
+        return super.onCreateOptionsMenu(menu)
+    }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when (item?.itemId) {
