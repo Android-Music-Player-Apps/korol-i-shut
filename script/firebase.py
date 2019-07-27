@@ -12,15 +12,15 @@ from mutagen.mp3 import MP3
 ARTIST = "Король и шут"
 GENRE = "Punk Rock"
 SITE = "http://www.korol-i-shut.ru/news/"
-FIREBASE_START = "https://firebasestorage.googleapis.com/v0/b/korol-i-shut.appspot.com/o/"
-FIREBASE_IMAGE = "cover.png"
-FIREBASE_END = "?alt=media"
+IMAGE_COVER = "cover.png"
 
-# config
-PATH = "/Users/olehka/Desktop/Media/Король и Шут/2010 - Театр Демона (2010, Никитин)/"
+# CONFIG
+URL_PREFIX = "https://firebasestorage.googleapis.com/v0/b/korol-i-shut.appspot.com/o/"
+URL_SUFFIX = "?alt=media"
+LOCAL_PATH = "/Users/olehka/Desktop/Media/Music/Король и Шут/2010 - Театр Демона (2010, Никитин)/"
 ID_PREFIX = "teatr_demona"
 ALBUM = "2010 - Театр Демона"
-FIREBASE_ALBUM = "2010_Teatr-demona%2F"
+REMOTE_ALBUM = "2010_Teatr-demona%2F"
 
 track_dict = OrderedDict()
 track_dict['id'] = ''
@@ -51,10 +51,10 @@ def set_total_track_count(dict, count):
     dict['totalTrackCount'] = count
 
 def set_source(dict, title):
-    dict['source'] = FIREBASE_START + FIREBASE_ALBUM + title.replace(" ", "%20").replace("й", "й").replace("+", "%2B").replace("ё", "ё") + FIREBASE_END
+    dict['source'] = URL_PREFIX + REMOTE_ALBUM + title.replace(" ", "%20").replace("й", "й").replace("+", "%2B").replace("ё", "ё") + URL_SUFFIX
 
 def set_image(dict):
-    dict['image'] = FIREBASE_START + FIREBASE_ALBUM + FIREBASE_IMAGE + FIREBASE_END
+    dict['image'] = URL_PREFIX + REMOTE_ALBUM + IMAGE_COVER + URL_SUFFIX
 
 def set_duration(dict, mp3_file):
     audio = MP3(mp3_file)
@@ -64,7 +64,7 @@ mp3_files = []
 mp3_paths = []
 
 # r = root, d = directories, f = files
-for r, d, f in os.walk(PATH):
+for r, d, f in os.walk(LOCAL_PATH):
     for file in f:
         if ".mp3" in file:
             mp3_files.append(file)
@@ -90,6 +90,6 @@ for mp3_f in mp3_files:
     index += 1
 
 # print(json.dumps(catalog_list, ensure_ascii = False, indent = 2))
-with io.open('hello.txt', 'w') as outfile:
+with io.open('output.txt', 'w') as outfile:
     temp = json.dumps(catalog_list, ensure_ascii = False, indent = 2)
     outfile.write(temp.decode('utf-8'))
