@@ -59,6 +59,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 
+
+const val defaultUrl = "https://storage.googleapis.com/uamp/catalog.json"
+const val firebaseUrl = "https://firebasestorage.googleapis.com/v0/b/korol-i-shut.appspot.com/o/catalog.json?alt=media"
+
 /**
  * This class is the entry point for browsing and playback commands from the APP's UI
  * and other apps that wish to play music via UAMP (for example, Android Auto or
@@ -96,7 +100,7 @@ open class MusicService : MediaBrowserServiceCompat() {
     private var isForegroundService = false
 
     private val remoteJsonSource: Uri =
-        Uri.parse("https://firebasestorage.googleapis.com/v0/b/korol-i-shut.appspot.com/o/catalog.json?alt=media")
+        Uri.parse(firebaseUrl)
 
     private val uAmpAudioAttributes = AudioAttributes.Builder()
         .setContentType(C.CONTENT_TYPE_MUSIC)

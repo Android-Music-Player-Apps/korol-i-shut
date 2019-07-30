@@ -11,8 +11,9 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="centerCrop"
-        android:src="@drawable/drawer_header" />
+        android:tint="#59000000"
+        android:scaleType="fitXY"
+        android:src="@drawable/group_logo" />
 
     <!--<TextView-->
         <!--android:layout_width="match_parent"-->
