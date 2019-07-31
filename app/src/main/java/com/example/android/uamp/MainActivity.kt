@@ -25,6 +25,7 @@ import com.example.android.uamp.media.MusicService
 import com.example.android.uamp.utils.Event
 import com.example.android.uamp.utils.InjectorUtils
 import com.example.android.uamp.viewmodels.MainActivityViewModel
+import com.google.android.gms.ads.MobileAds
 
 class MainActivity : DrawerActivity() {
 
@@ -34,6 +35,7 @@ class MainActivity : DrawerActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setToolbar()
+        initializeMobileAds()
 
         drawerLayout = findViewById(R.id.drawer_layout)
         navigationView = findViewById(R.id.nav_view)
@@ -104,4 +106,6 @@ class MainActivity : DrawerActivity() {
     private fun getBrowseFragment(mediaId: String): MediaItemFragment? {
         return supportFragmentManager.findFragmentByTag(mediaId) as MediaItemFragment?
     }
+
+    private fun initializeMobileAds() = MobileAds.initialize(this, "ca-app-pub-8081141113344620~7489791873")
 }

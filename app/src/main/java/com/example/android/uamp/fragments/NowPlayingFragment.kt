@@ -18,6 +18,7 @@ package com.example.android.uamp.fragments
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -33,6 +34,10 @@ import com.example.android.uamp.utils.InjectorUtils
 import com.example.android.uamp.viewmodels.MainActivityViewModel
 import com.example.android.uamp.viewmodels.NowPlayingFragmentViewModel
 import com.example.android.uamp.viewmodels.NowPlayingFragmentViewModel.NowPlayingMetadata
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 
 /**
  * A fragment representing the current media item being played.
@@ -41,6 +46,7 @@ class NowPlayingFragment : Fragment() {
     private lateinit var mainActivityViewModel: MainActivityViewModel
     private lateinit var nowPlayingViewModel: NowPlayingFragmentViewModel
     private lateinit var positionTextView: TextView
+    private lateinit var bannerAdView: AdView
 
     companion object {
         fun newInstance() = NowPlayingFragment()
@@ -71,18 +77,23 @@ class NowPlayingFragment : Fragment() {
         nowPlayingViewModel.mediaButtonRes.observe(this,
                 Observer { res -> view.findViewById<ImageView>(R.id.media_button).setImageResource(res) })
         nowPlayingViewModel.mediaPosition.observe(this,
-                Observer { pos -> positionTextView.text =
-                        NowPlayingMetadata.timestampToMSS(context, pos) })
+                Observer { pos ->
+                    positionTextView.text =
+                            NowPlayingMetadata.timestampToMSS(context, pos)
+                })
 
         // Setup UI handlers for buttons
         view.findViewById<ImageButton>(R.id.media_button).setOnClickListener {
-            nowPlayingViewModel.mediaMetadata.value?.let { mainActivityViewModel.playMediaId(it.id) } }
+            nowPlayingViewModel.mediaMetadata.value?.let { mainActivityViewModel.playMediaId(it.id) }
+        }
 
         // Initialize playback duration and position to zero
         view.findViewById<TextView>(R.id.duration).text =
                 NowPlayingMetadata.timestampToMSS(context, 0L)
         positionTextView = view.findViewById<TextView>(R.id.position)
                 .apply { text = NowPlayingMetadata.timestampToMSS(context, 0L) }
+
+        initBannerAdView(view)
     }
 
     /**
@@ -100,5 +111,30 @@ class NowPlayingFragment : Fragment() {
         view.findViewById<TextView>(R.id.title).text = metadata.title
         view.findViewById<TextView>(R.id.subtitle).text = metadata.subtitle
         view.findViewById<TextView>(R.id.duration).text = metadata.duration
+    }
+
+    private fun initBannerAdView(view: View) {
+        val adRequest = AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build()
+
+        val adListenerImpl = object : AdListener() {
+
+            override fun onAdLoaded() {
+                super.onAdLoaded()
+                Log.d("Ads", "onAdLoaded")
+            }
+
+            override fun onAdFailedToLoad(p0: Int) {
+                super.onAdFailedToLoad(p0)
+                Log.d("Ads", "onAdFailedToLoad: $p0")
+            }
+        }
+
+        bannerAdView = view.findViewById<AdView>(R.id.bannerAdView)
+                .apply {
+                    adListener = adListenerImpl
+                    loadAd(adRequest)
+                }
     }
 }
