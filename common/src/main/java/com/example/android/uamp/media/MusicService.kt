@@ -61,6 +61,7 @@ import kotlinx.coroutines.launch
 
 const val DEFAULT_CATALOG_URL = "https://storage.googleapis.com/uamp/catalog.json"
 const val FIREBASE_CATALOG_URL = "https://firebasestorage.googleapis.com/v0/b/korol-i-shut.appspot.com/o/catalog.json?alt=media"
+const val DIGITALOCEAN_CATALOG_URL = "https://olehka.fra1.digitaloceanspaces.com/korol-i-shut/catalog.json"
 
 
 /**
@@ -100,7 +101,7 @@ open class MusicService : MediaBrowserServiceCompat() {
     private var isForegroundService = false
 
     private val remoteJsonSource: Uri =
-        Uri.parse(DEFAULT_CATALOG_URL)
+        Uri.parse(DIGITALOCEAN_CATALOG_URL)
 
     private val uAmpAudioAttributes = AudioAttributes.Builder()
         .setContentType(C.CONTENT_TYPE_MUSIC)

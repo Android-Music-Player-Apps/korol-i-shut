@@ -31,16 +31,12 @@
         android:contentDescription="@string/album_art_alt"
         app:srcCompat="@android:color/transparent"/>
 
-    <com.google.android.gms.ads.AdView
-        android:id="@+id/bannerAdView"
+    <FrameLayout
+        android:id="@+id/adContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/black"
-        app:layout_constraintTop_toTopOf="parent"
-        app:adSize="SMART_BANNER"
-        app:adUnitId="ca-app-pub-3940256099942544/6300978111" />
-<!--    app:adUnitId="ca-app-pub-3940256099942544/6300978111"-->
-<!--    app:adUnitId="ca-app-pub-8081141113344620/3425002907"-->
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/divider"

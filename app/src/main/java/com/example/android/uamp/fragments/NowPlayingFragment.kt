@@ -22,6 +22,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -39,14 +40,17 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 
+const val MOTOROLA_ADS_TEST_ID = "9D5E2A9D2650549F32FBDB849158C645"
+const val TEST_ADS_UNIT_ID = "ca-app-pub-3940256099942544/6300978111"
+const val PROD_ADS_UNIT_ID = "ca-app-pub-8081141113344620/3425002907"
+
+
 /**
  * A fragment representing the current media item being played.
  */
 class NowPlayingFragment : Fragment() {
     private lateinit var mainActivityViewModel: MainActivityViewModel
     private lateinit var nowPlayingViewModel: NowPlayingFragmentViewModel
-    private lateinit var positionTextView: TextView
-    private lateinit var bannerAdView: AdView
 
     companion object {
         fun newInstance() = NowPlayingFragment()
@@ -62,6 +66,12 @@ class NowPlayingFragment : Fragment() {
 
         // Always true, but lets lint know that as well.
         val context = activity ?: return
+
+        // Initialize playback duration and position to zero
+        view.findViewById<TextView>(R.id.duration).text =
+                NowPlayingMetadata.timestampToMSS(context, 0L)
+        val positionTextView = view.findViewById<TextView>(R.id.position)
+                .apply { text = NowPlayingMetadata.timestampToMSS(context, 0L) }
 
         // Inject our activity and view models into this fragment
         mainActivityViewModel = ViewModelProviders
@@ -87,12 +97,6 @@ class NowPlayingFragment : Fragment() {
             nowPlayingViewModel.mediaMetadata.value?.let { mainActivityViewModel.playMediaId(it.id) }
         }
 
-        // Initialize playback duration and position to zero
-        view.findViewById<TextView>(R.id.duration).text =
-                NowPlayingMetadata.timestampToMSS(context, 0L)
-        positionTextView = view.findViewById<TextView>(R.id.position)
-                .apply { text = NowPlayingMetadata.timestampToMSS(context, 0L) }
-
         initBannerAdView(view)
     }
 
@@ -116,6 +120,7 @@ class NowPlayingFragment : Fragment() {
     private fun initBannerAdView(view: View) {
         val adRequest = AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice(MOTOROLA_ADS_TEST_ID)
                 .build()
 
         val adListenerImpl = object : AdListener() {
@@ -131,10 +136,16 @@ class NowPlayingFragment : Fragment() {
             }
         }
 
-        bannerAdView = view.findViewById<AdView>(R.id.bannerAdView)
-                .apply {
-                    adListener = adListenerImpl
-                    loadAd(adRequest)
-                }
+        val adView = AdView(context).apply {
+            adSize = AdSize.SMART_BANNER
+            adUnitId = TEST_ADS_UNIT_ID
+            adListener = adListenerImpl
+        }
+
+        view.findViewById<FrameLayout>(R.id.adContainer).apply {
+            addView(adView)
+        }
+
+        adView.loadAd(adRequest)
     }
 }
