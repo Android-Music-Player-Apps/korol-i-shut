@@ -40,9 +40,9 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 
-const val MOTOROLA_ADS_TEST_ID = "9D5E2A9D2650549F32FBDB849158C645"
-const val TEST_ADS_UNIT_ID = "ca-app-pub-3940256099942544/6300978111"
-const val PROD_ADS_UNIT_ID = "ca-app-pub-8081141113344620/3425002907"
+const val MOTOROLA_AD_TEST_ID = "9D5E2A9D2650549F32FBDB849158C645"
+const val TEST_AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111"
+const val PROD_AD_UNIT_ID = "ca-app-pub-8081141113344620/3425002907"
 
 
 /**
@@ -119,8 +119,8 @@ class NowPlayingFragment : Fragment() {
 
     private fun initBannerAdView(view: View) {
         val adRequest = AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .addTestDevice(MOTOROLA_ADS_TEST_ID)
+//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+//                .addTestDevice(MOTOROLA_AD_TEST_ID)
                 .build()
 
         val adListenerImpl = object : AdListener() {
@@ -138,7 +138,7 @@ class NowPlayingFragment : Fragment() {
 
         val adView = AdView(context).apply {
             adSize = AdSize.SMART_BANNER
-            adUnitId = TEST_ADS_UNIT_ID
+            adUnitId = PROD_AD_UNIT_ID
             adListener = adListenerImpl
         }
 

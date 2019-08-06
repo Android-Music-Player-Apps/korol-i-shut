@@ -27,6 +27,9 @@ import com.example.android.uamp.utils.InjectorUtils
 import com.example.android.uamp.viewmodels.MainActivityViewModel
 import com.google.android.gms.ads.MobileAds
 
+const val ADMOB_APP_ID = "ca-app-pub-8081141113344620~7489791873"
+
+
 class MainActivity : DrawerActivity() {
 
     private lateinit var viewModel: MainActivityViewModel
@@ -107,5 +110,5 @@ class MainActivity : DrawerActivity() {
         return supportFragmentManager.findFragmentByTag(mediaId) as MediaItemFragment?
     }
 
-    private fun initializeMobileAds() = MobileAds.initialize(this, "ca-app-pub-8081141113344620~7489791873")
+    private fun initializeMobileAds() = MobileAds.initialize(this, ADMOB_APP_ID)
 }

@@ -37,6 +37,11 @@
             android:name="com.google.android.gms.car.application"
             android:resource="@xml/automotive_app_desc" />
 
+        <!-- AdMob -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-8081141113344620~7489791873"/>
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleInstance">
@@ -90,10 +95,6 @@
                 <action android:name="android.media.browse.MediaBrowserService" />
             </intent-filter>
         </service>
-
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-8081141113344620~7489791873"/>
 
     </application>
 
