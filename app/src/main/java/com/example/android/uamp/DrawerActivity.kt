@@ -1,6 +1,7 @@
 package com.example.android.uamp
 
 import android.content.Intent
+import android.net.Uri
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBar
@@ -75,6 +76,9 @@ abstract class DrawerActivity : AppCompatActivity() {
                 R.id.nav_about -> {
                     openWebView("https://olehkapustianov.com/")
                 }
+                R.id.nav_privacy_policy -> {
+                    openWebBrowserActivity("https://olehkapustianov.com/korol-i-shut-app/privacy_policy.html")
+                }
             }
 
             true
@@ -102,5 +106,9 @@ abstract class DrawerActivity : AppCompatActivity() {
             putExtra(KEY_URI, uri)
         }
         startActivity(intent)
+    }
+
+    private fun openWebBrowserActivity(uri: String) {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(uri)))
     }
 }

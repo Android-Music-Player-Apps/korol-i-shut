@@ -24,8 +24,8 @@ android {
     compileSdkVersion rootProject.compileSdkVersion
     defaultConfig {
         applicationId "com.olehka.korolishut"
-        versionCode 3
-        versionName "0.3"
+        versionCode 4
+        versionName "0.4"
         setProperty("archivesBaseName", "korolishut" + "-v" + versionCode + "(" + versionName + ")")
 
 
