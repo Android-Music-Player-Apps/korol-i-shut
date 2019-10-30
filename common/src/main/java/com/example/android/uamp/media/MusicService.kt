@@ -101,7 +101,7 @@ open class MusicService : MediaBrowserServiceCompat() {
     private var isForegroundService = false
 
     private val remoteJsonSource: Uri =
-        Uri.parse(DIGITALOCEAN_CATALOG_URL)
+        Uri.parse(FIREBASE_CATALOG_URL)
 
     private val uAmpAudioAttributes = AudioAttributes.Builder()
         .setContentType(C.CONTENT_TYPE_MUSIC)

@@ -119,8 +119,8 @@ class NowPlayingFragment : Fragment() {
 
     private fun initBannerAdView(view: View) {
         val adRequest = AdRequest.Builder()
-//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-//                .addTestDevice(MOTOROLA_AD_TEST_ID)
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .addTestDevice(MOTOROLA_AD_TEST_ID)
                 .build()
 
         val adListenerImpl = object : AdListener() {
@@ -138,7 +138,7 @@ class NowPlayingFragment : Fragment() {
 
         val adView = AdView(context).apply {
             adSize = AdSize.SMART_BANNER
-            adUnitId = PROD_AD_UNIT_ID
+            adUnitId = TEST_AD_UNIT_ID
             adListener = adListenerImpl
         }
 
