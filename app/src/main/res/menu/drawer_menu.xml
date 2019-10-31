@@ -8,11 +8,11 @@
         <item
             android:id="@+id/nav_site"
             android:icon="@drawable/ic_outline_tab_24px"
-            android:title="@string/official_site" />
+            android:title="@string/official_website" />
         <item
             android:id="@+id/nav_wiki"
             android:icon="@drawable/ic_outline_info_24px"
-            android:title="@string/wiki_info" />
+            android:title="@string/link_to_wiki" />
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_outline_insert_emoticon_24px"
