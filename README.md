@@ -1,4 +1,4 @@
-THE KING AND THE JESTER / Король и Шут
+The King And The Jester / Король и Шут
 =====================================
 
 This is Android online streaming music application based on [uamp (Universal Android Music Player)](https://github.com/android/uamp). 
