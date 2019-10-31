@@ -2,7 +2,7 @@ The King And The Jester / Король и Шут
 =====================================
 
 This is Android online streaming music application based on [uamp (Universal Android Music Player)](https://github.com/android/uamp). 
-It includes the full discography of legendary Russian rock band The King and The Jester / Король и Шут.
+It includes the full discography of legendary Russian punk rock band The King and The Jester / Король и Шут.
 
 ## Download Link
 
