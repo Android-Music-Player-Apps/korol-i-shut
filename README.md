@@ -10,7 +10,7 @@ It includes the full discography of legendary Russian rock band The King and The
 
 ## Screenshots
 
-<img src="https://github.com/olehka/korol-i-shut/blob/master/screenshots/Screenshot_1572517119.png" width="270" height="550">  <img src="https://github.com/olehka/korol-i-shut/blob/master/screenshots/Screenshot_1572517108.png" width="270" height="550">  <img src="https://github.com/olehka/korol-i-shut/blob/master/screenshots/Screenshot_1572517199.png" width="270" height="550">
+<img src="./screenshots/Screenshot_1572517119.png" width="270" height="550"> <img src="./screenshots/Screenshot_1572517108.png" width="270" height="550"> <img src="./screenshots/Screenshot_1572517199.png" width="270" height="550">
 
 ## License
 
