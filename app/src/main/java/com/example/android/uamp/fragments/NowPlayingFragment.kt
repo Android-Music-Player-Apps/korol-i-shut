@@ -138,7 +138,7 @@ class NowPlayingFragment : Fragment() {
 
         val adView = AdView(context).apply {
             adSize = AdSize.SMART_BANNER
-            adUnitId = TEST_AD_UNIT_ID
+            adUnitId = PROD_AD_UNIT_ID
             adListener = adListenerImpl
         }
 
