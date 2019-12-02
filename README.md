@@ -6,7 +6,13 @@ It includes the full discography of legendary Russian punk rock band The King an
 
 ## Download Link
 
-[__Download the .apk file__](https://github.com/olehka/korol-i-shut/raw/master/app/release/korolishut-v5(0.5)-release.apk) and install it on an Android device. Because this application exists outside of Google Play, don't forget to enable installing Unknown Apps (Unknown Sources) in Settings. 
+### Option 1
+
+[__Direct link to Google Play__](https://play.google.com/store/apps/details?id=com.olehka.korolishut) is the fastest way to install the application on any supported Android device.
+
+### Option 2
+
+[__Download the .apk file__](https://github.com/olehka/korol-i-shut/raw/master/app/release/korolishut-v5(0.5)-release.apk) and install it on an Android device. Don't forget to enable installing Unknown Apps (Unknown Sources) in Settings.
 
 ## Screenshots
 
