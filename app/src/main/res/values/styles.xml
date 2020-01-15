@@ -46,4 +46,8 @@
         <item name="android:paddingTop">2dp</item>
     </style>
 
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+
 </resources>

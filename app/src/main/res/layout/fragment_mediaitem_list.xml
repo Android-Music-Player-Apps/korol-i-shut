@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2017 Google Inc. All rights reserved.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,8 +13,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<FrameLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -27,6 +25,7 @@
         style="@style/MediaItemList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        tools:visibility="gone"
         tools:context="com.example.android.uamp.fragments.MediaItemFragment"
         tools:listitem="@layout/fragment_mediaitem" />
 
@@ -36,13 +35,16 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center" />
 
-    <ImageView
+    <TextView
         android:id="@+id/networkError"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_margin="20dp"
+        android:text="@string/network_error_message"
+        android:textSize="18sp"
         android:visibility="gone"
-        app:srcCompat="@drawable/group_photo" />
+        tools:visibility="visible" />
 
 </FrameLayout>
 

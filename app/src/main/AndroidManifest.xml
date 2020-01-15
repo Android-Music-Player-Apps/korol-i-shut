@@ -44,6 +44,7 @@
 
         <activity
             android:name=".MainActivity"
+            android:theme="@style/AppTheme.Launcher"
             android:launchMode="singleInstance">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

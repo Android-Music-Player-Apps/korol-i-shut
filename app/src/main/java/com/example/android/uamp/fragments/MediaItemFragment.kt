@@ -31,9 +31,7 @@ import com.example.android.uamp.R
 import com.example.android.uamp.utils.InjectorUtils
 import com.example.android.uamp.viewmodels.MainActivityViewModel
 import com.example.android.uamp.viewmodels.MediaItemFragmentViewModel
-import kotlinx.android.synthetic.main.fragment_mediaitem_list.list
-import kotlinx.android.synthetic.main.fragment_mediaitem_list.loadingSpinner
-import kotlinx.android.synthetic.main.fragment_mediaitem_list.networkError
+import kotlinx.android.synthetic.main.fragment_mediaitem_list.*
 
 /**
  * A fragment representing a list of MediaItems.
@@ -88,6 +86,9 @@ class MediaItemFragment : Fragment() {
         mediaItemFragmentViewModel.networkError.observe(this,
             Observer<Boolean> { error ->
                 networkError.visibility = if (error) View.VISIBLE else View.GONE
+                if (error) {
+                    loadingSpinner.visibility = View.GONE
+                }
             })
 
         // Set the adapter
