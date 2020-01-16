@@ -12,15 +12,15 @@ from mutagen.mp3 import MP3
 ARTIST = "Король и шут"
 GENRE = "Punk Rock"
 SITE = "http://www.korol-i-shut.ru/news/"
-IMAGE_COVER = "cover.png"
+IMAGE_COVER = "cover.jpg"
 
 # CONFIG
 URL_PREFIX = "https://firebasestorage.googleapis.com/v0/b/korol-i-shut.appspot.com/o/"
 URL_SUFFIX = "?alt=media"
-LOCAL_PATH = "/Users/olehka/Desktop/Media/Music/Король и Шут/2010 - Театр Демона (2010, Никитин)/"
-ID_PREFIX = "teatr_demona"
-ALBUM = "2010 - Театр Демона"
-REMOTE_ALBUM = "2010_Teatr-demona%2F"
+LOCAL_PATH = "/Users/olehka/Desktop/Media/Music/Король и Шут/2012 - TODD. Акт 2. На краю (2012, Союз)/"
+ID_PREFIX = "todd2_na_krayu"
+ALBUM = "2012 - TODD. Акт 2. На краю"
+REMOTE_ALBUM = "2012_TODD-2-Na-krayu%2F"
 
 track_dict = OrderedDict()
 track_dict['id'] = ''
