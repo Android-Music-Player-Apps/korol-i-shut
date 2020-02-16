@@ -15,7 +15,7 @@
   ~ limitations under the License.
   -->
 <resources>
-    <string name="app_name">Король и Шут</string>
+    <string name="app_name">King And Jester</string>
 
     <string name="skip_back_10s">Skip back 10s</string>
     <string name="skip_forward_10s">Skip forward 10s</string>
@@ -28,7 +28,7 @@
 
     <string name="albums">Albums</string>
     <string name="official_website">Official website</string>
-    <string name="link_to_wiki">Link to Wikipedia</string>
+    <string name="link_to_wiki">Page on Wikipedia</string>
     <string name="about_developer">About developer</string>
     <string name="share">Share</string>
     <string name="privacy_policy">Privacy Policy</string>
