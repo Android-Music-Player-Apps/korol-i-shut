@@ -42,8 +42,8 @@ android {
             useSupportLibrary true
         }
     }
-    dataBinding {
-        enabled = true
+    buildFeatures{
+        dataBinding = true
     }
     buildTypes {
         release {
