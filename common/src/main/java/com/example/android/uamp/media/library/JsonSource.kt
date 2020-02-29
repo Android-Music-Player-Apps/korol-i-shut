@@ -17,6 +17,7 @@
 package com.example.android.uamp.media.library
 
 import android.content.Context
+import android.content.res.Resources
 import android.net.Uri
 import android.support.v4.media.MediaBrowserCompat.MediaItem
 import android.support.v4.media.MediaDescriptionCompat.STATUS_NOT_DOWNLOADED
@@ -62,10 +63,12 @@ class JsonSource(context: Context, private val source: Uri) : AbstractMusicSourc
 
     private var catalog: List<MediaMetadataCompat> = emptyList()
     private val glide: RequestManager
+    private val resources: Resources
 
     init {
         state = STATE_INITIALIZING
         glide = Glide.with(context)
+        resources = context.resources
     }
 
     override fun iterator(): Iterator<MediaMetadataCompat> = catalog.iterator()
@@ -115,7 +118,8 @@ class JsonSource(context: Context, private val source: Uri) : AbstractMusicSourc
                     .get()
 
                 // Expose file via Local URI
-                val artUri = artFile.asAlbumArtContentUri()
+                val artUri = artFile.asAlbumArtContentUri(
+                        resources.getString(R.string.provider_authorities))
 
                 MediaMetadataCompat.Builder()
                     .from(song)
