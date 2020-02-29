@@ -14,8 +14,6 @@ import androidx.core.view.MenuItemCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 
-const val KEY_URI = "key_uri"
-const val URL_TO_SHARE = "https://play.google.com/store/apps/details?id=com.olehka.korolishut"
 
 abstract class DrawerActivity : AppCompatActivity() {
 
@@ -30,7 +28,7 @@ abstract class DrawerActivity : AppCompatActivity() {
             shareActionProvider = MenuItemCompat.getActionProvider(it) as ShareActionProvider?
         }
         val shareIntent = ShareCompat.IntentBuilder.from(this)
-                .setType("text/plain").setText(URL_TO_SHARE).intent
+                .setType("text/plain").setText(BuildConfig.URL_TO_SHARE).intent
         shareActionProvider?.setShareIntent(shareIntent)
         return super.onCreateOptionsMenu(menu)
     }
@@ -68,16 +66,16 @@ abstract class DrawerActivity : AppCompatActivity() {
                     openMainActivity()
                 }
                 R.id.nav_site -> {
-                    openWebView("http://www.korol-i-shut.ru/news/")
+                    openWebView(getString(R.string.official_website_url))
                 }
                 R.id.nav_wiki -> {
-                    openWebView("https://ru.m.wikipedia.org/wiki/%D0%9A%D0%BE%D1%80%D0%BE%D0%BB%D1%8C_%D0%B8_%D0%A8%D1%83%D1%82")
+                    openWebView(getString(R.string.link_to_wiki_url))
                 }
                 R.id.nav_about -> {
-                    openWebView("https://olehkapustianov.com/")
+                    openWebView(getString(R.string.about_developer_url))
                 }
                 R.id.nav_privacy_policy -> {
-                    openWebBrowserActivity("https://olehkapustianov.com/korol-i-shut-app/privacy_policy.html")
+                    openWebBrowserActivity(getString(R.string.privacy_policy_url))
                 }
             }
 
@@ -112,3 +110,5 @@ abstract class DrawerActivity : AppCompatActivity() {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(uri)))
     }
 }
+
+const val KEY_URI = "key_uri"

@@ -32,6 +32,8 @@ android {
         targetSdkVersion rootProject.targetSdkVersion
         multiDexEnabled true
 
+        buildConfigField "String", "URL_TO_SHARE", "\"https://github.com/android/uamp\""
+
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_8
             targetCompatibility JavaVersion.VERSION_1_8
@@ -59,12 +61,14 @@ android {
             applicationId "com.olehka.korolishut"
             versionCode 6
             versionName "1.0"
+            buildConfigField "String", "URL_TO_SHARE", "\"https://play.google.com/store/apps/details?id=com.olehka.korolishut\""
         }
         tsoikinoband {
             dimension "default"
             applicationId "com.olehka.tsoikinoband"
             versionCode 1
             versionName "0.1"
+            buildConfigField "String", "URL_TO_SHARE", "\"https://play.google.com/store/apps/details?id=com.olehka.tsoikinoband\""
         }
     }
 }
