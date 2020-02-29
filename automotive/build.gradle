@@ -45,6 +45,15 @@ android {
         }
     }
 
+    flavorDimensions "default"
+    productFlavors {
+        korolishut {
+            dimension "default"
+        }
+        tsoikinoband {
+            dimension "default"
+        }
+    }
 }
 
 dependencies {

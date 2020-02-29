@@ -23,11 +23,10 @@ apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle p
 android {
     compileSdkVersion rootProject.compileSdkVersion
     defaultConfig {
-        applicationId "com.olehka.korolishut"
-        versionCode 6
+        applicationId "com.example.android.uamp.next"
+        versionCode 1
         versionName "1.0"
-        setProperty("archivesBaseName", "korolishut" + "-v" + versionCode + "(" + versionName + ")")
-
+        setProperty("archivesBaseName", applicationId + "-v" + versionCode + "(" + versionName + ")")
 
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
@@ -37,7 +36,6 @@ android {
             sourceCompatibility JavaVersion.VERSION_1_8
             targetCompatibility JavaVersion.VERSION_1_8
         }
-
         vectorDrawables {
             useSupportLibrary true
         }
@@ -53,6 +51,21 @@ android {
     }
     lintOptions {
         abortOnError false
+    }
+    flavorDimensions "default"
+    productFlavors {
+        korolishut {
+            dimension "default"
+            applicationId "com.olehka.korolishut"
+            versionCode 6
+            versionName "1.0"
+        }
+        tsoikinoband {
+            dimension "default"
+            applicationId "com.olehka.tsoikinoband"
+            versionCode 1
+            versionName "0.1"
+        }
     }
 }
 

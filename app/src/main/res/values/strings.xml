@@ -16,7 +16,6 @@
   -->
 <resources>
     <string name="app_name">King And Jester</string>
-
     <string name="skip_back_10s">Skip back 10s</string>
     <string name="skip_forward_10s">Skip forward 10s</string>
     <string name="play">Play</string>
@@ -25,7 +24,6 @@
     <string name="album_art_alt">Album art</string>
     <string name="duration_unknown">--:--</string>
     <string name="duration_format">%d:%02d</string>
-
     <string name="albums">Albums</string>
     <string name="official_website">Official website</string>
     <string name="link_to_wiki">Page on Wikipedia</string>
@@ -33,4 +31,6 @@
     <string name="share">Share</string>
     <string name="privacy_policy">Privacy Policy</string>
     <string name="network_error_message">We apologise for the inconvenience. \n\nThe current Pricing Plan for this music storage is Free / 0$. According to its specs, there is a limit for Downloading (1 Gb / day). If You see this message, please wait until the next day, when the limit will be restarted. \n\nHelp us to improve the service by writing positive feedback on the Google Play market. Thank You!</string>
+
+    <string name="now_playing_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/6300978111</string>
 </resources>

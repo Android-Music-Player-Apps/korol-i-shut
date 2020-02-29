@@ -40,10 +40,6 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
 
-const val MOTOROLA_AD_TEST_ID = "9D5E2A9D2650549F32FBDB849158C645"
-const val TEST_AD_UNIT_ID = "ca-app-pub-3940256099942544/6300978111"
-const val PROD_AD_UNIT_ID = "ca-app-pub-8081141113344620/3425002907"
-
 
 /**
  * A fragment representing the current media item being played.
@@ -82,11 +78,11 @@ class NowPlayingFragment : Fragment() {
                 .get(NowPlayingFragmentViewModel::class.java)
 
         // Attach observers to the LiveData coming from this ViewModel
-        nowPlayingViewModel.mediaMetadata.observe(this,
+        nowPlayingViewModel.mediaMetadata.observe(viewLifecycleOwner,
                 Observer { mediaItem -> updateUI(view, mediaItem) })
-        nowPlayingViewModel.mediaButtonRes.observe(this,
+        nowPlayingViewModel.mediaButtonRes.observe(viewLifecycleOwner,
                 Observer { res -> view.findViewById<ImageView>(R.id.media_button).setImageResource(res) })
-        nowPlayingViewModel.mediaPosition.observe(this,
+        nowPlayingViewModel.mediaPosition.observe(viewLifecycleOwner,
                 Observer { pos ->
                     positionTextView.text =
                             NowPlayingMetadata.timestampToMSS(context, pos)
@@ -138,7 +134,7 @@ class NowPlayingFragment : Fragment() {
 
         val adView = AdView(context).apply {
             adSize = AdSize.SMART_BANNER
-            adUnitId = PROD_AD_UNIT_ID
+            adUnitId = getString(R.string.now_playing_ad_unit_id)
             adListener = adListenerImpl
         }
 
@@ -149,3 +145,5 @@ class NowPlayingFragment : Fragment() {
         adView.loadAd(adRequest)
     }
 }
+
+const val MOTOROLA_AD_TEST_ID = "9D5E2A9D2650549F32FBDB849158C645"
