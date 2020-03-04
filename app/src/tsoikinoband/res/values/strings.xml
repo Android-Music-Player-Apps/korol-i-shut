@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Tsoi Kino</string>
+    <string name="app_name">Kino Tsoi</string>
     <string name="official_website_url" translatable="false">https://www.kinomannia.ru/</string>
     <string name="link_to_wiki_url" translatable="false">https://ru.m.wikipedia.org/wiki/%D0%9A%D0%B8%D0%BD%D0%BE_(%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D0%B0)</string>
     <string name="privacy_policy_url" translatable="false">https://olehkapustianov.com/tsoi-kino-band-app/privacy_policy.html</string>

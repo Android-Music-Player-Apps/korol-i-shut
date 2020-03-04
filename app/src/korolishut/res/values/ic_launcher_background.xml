@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Кино Цой</string>
+    <color name="ic_launcher_background">#E3795E</color>
 </resources>

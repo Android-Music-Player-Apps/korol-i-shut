@@ -37,4 +37,5 @@
     <string name="link_to_wiki_url" translatable="false">https://github.com/android/uamp/blob/master/docs/FullGuide.md</string>
     <string name="about_developer_url" translatable="false">https://olehkapustianov.com/</string>
     <string name="privacy_policy_url" translatable="false">https://olehkapustianov.com/korol-i-shut-app/privacy_policy.html</string>
+    <string name="logo">Logo</string>
 </resources>

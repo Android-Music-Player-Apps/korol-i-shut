@@ -41,4 +41,7 @@
 
     <dimen name="now_playing_title_size">32sp</dimen>
     <dimen name="now_playing_artist_size">18sp</dimen>
+    
+    <dimen name="image_logo_size">200dp</dimen>
+    <dimen name="drawer_padding">20dp</dimen>
 </resources>

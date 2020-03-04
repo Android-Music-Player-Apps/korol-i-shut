@@ -1,24 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="220dp"
-    android:background="?attr/colorPrimaryDark"
+    android:layout_height="wrap_content"
+    android:background="@android:color/black"
     android:gravity="bottom"
     android:orientation="vertical"
-    android:padding="0dp"
+    android:paddingTop="@dimen/drawer_padding"
+    android:paddingBottom="0dp"
+    android:paddingStart="0dp"
+    android:paddingEnd="0dp"
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:tint="#59000000"
-        android:scaleType="fitXY"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/image_logo_size"
+        android:layout_gravity="center"
+        android:contentDescription="@string/logo"
+        android:scaleType="centerInside"
         android:src="@drawable/group_logo" />
 
     <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="@string/app_name"-->
-        <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1" />-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:text="@string/app_name"-->
+    <!--android:textAppearance="@style/TextAppearance.AppCompat.Body1" />-->
 
 </LinearLayout>
