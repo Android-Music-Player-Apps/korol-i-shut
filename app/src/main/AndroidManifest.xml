@@ -40,7 +40,7 @@
         <!-- AdMob -->
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-8081141113344620~7489791873"/>
+            android:value="@string/admob_app_id"/>
 
         <activity
             android:name=".MainActivity"

@@ -19,15 +19,13 @@ package com.example.android.uamp
 import android.media.AudioManager
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import com.example.android.uamp.fragments.MediaItemFragment
 import com.example.android.uamp.media.MusicService
 import com.example.android.uamp.utils.Event
 import com.example.android.uamp.utils.InjectorUtils
 import com.example.android.uamp.viewmodels.MainActivityViewModel
 import com.google.android.gms.ads.MobileAds
-
-const val ADMOB_APP_ID = "ca-app-pub-8081141113344620~7489791873"
 
 
 class MainActivity : DrawerActivity() {
@@ -49,8 +47,8 @@ class MainActivity : DrawerActivity() {
         // in the app.
         volumeControlStream = AudioManager.STREAM_MUSIC
 
-        viewModel = ViewModelProviders
-                .of(this, InjectorUtils.provideMainActivityViewModel(this))
+        viewModel = ViewModelProvider(
+                this, InjectorUtils.provideMainActivityViewModel(this))
                 .get(MainActivityViewModel::class.java)
 
         /**
@@ -111,5 +109,5 @@ class MainActivity : DrawerActivity() {
         return supportFragmentManager.findFragmentByTag(mediaId) as MediaItemFragment?
     }
 
-    private fun initializeMobileAds() = MobileAds.initialize(this, ADMOB_APP_ID)
+    private fun initializeMobileAds() = MobileAds.initialize(this, getString(R.string.admob_app_id))
 }
