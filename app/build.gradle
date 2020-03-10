@@ -38,6 +38,9 @@ android {
             sourceCompatibility JavaVersion.VERSION_1_8
             targetCompatibility JavaVersion.VERSION_1_8
         }
+        kotlinOptions {
+            jvmTarget = JavaVersion.VERSION_1_8.toString()
+        }
         vectorDrawables {
             useSupportLibrary true
         }
@@ -48,6 +51,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -78,6 +82,8 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
+    implementation "androidx.core:core-ktx:$androidx_core_ktx_version"
+    implementation "androidx.fragment:fragment-ktx:$androidx_fragment_ktx_version"
     implementation "androidx.appcompat:appcompat:$androidx_app_compat_version"
     implementation "androidx.recyclerview:recyclerview:$recycler_view_version"
 
