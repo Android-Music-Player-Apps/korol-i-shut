@@ -1,26 +1,26 @@
-King And Jester / Король и Шут
+Android Music Player Apps
 =====================================
 
-This is Android online music streaming application based on [uamp (Universal Android Music Player)](https://github.com/android/uamp). 
-It includes the full discography of legendary Russian punk rock band King and Jester / [Король и Шут](https://ru.wikipedia.org/wiki/%D0%9A%D0%BE%D1%80%D0%BE%D0%BB%D1%8C_%D0%B8_%D0%A8%D1%83%D1%82).
+Android online music player applications based on [uamp (Universal Android Music Player)](https://github.com/android/uamp). 
+These include the full discography of legendary Russian punk rock band King And Jester / [Король и Шут](https://ru.wikipedia.org/wiki/%D0%9A%D0%BE%D1%80%D0%BE%D0%BB%D1%8C_%D0%B8_%D0%A8%D1%83%D1%82), Kino Viktor Tsoi / [Кино Виктор Цой](https://ru.wikipedia.org/wiki/%D0%9A%D0%B8%D0%BD%D0%BE_(%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D0%B0)).
 
-## Download Link
+## Download Links (2)
 
-### Option 1
+### King And Jester / Король и Шут
 
-[__Direct link to Google Play__](https://play.google.com/store/apps/details?id=com.olehka.korolishut) is the fastest way to install the application on any supported Android device.
+[__Direct link to Google Play__](https://play.google.com/store/apps/details?id=com.olehka.korolishut) is the fastest way to install the application 'King And Jester' on any supported Android device.
 
-### Option 2
+### Kino Viktor Tsoi / Кино Виктор Цой
 
-[__Download korolishut-v6(1.0)-release.apk__](https://github.com/olehka/korol-i-shut/blob/master/app/release/korolishut-v6(1.0)-release.apk?raw=true) and install it on an Android device. Don't forget to enable installing Unknown Apps (Unknown Sources) in Settings.
+[__Direct link to Google Play__](https://play.google.com/store/apps/details?id=com.olehka.tsoikinoband) is the fastest way to install the application 'Kino Viktor Tsoi' on any supported Android device.
 
 ## Screenshots
 
-<img src="./screenshots/Screenshot_1572517119.png" width="270" height="550"> <img src="./screenshots/Screenshot_1572517108.png" width="270" height="550"> <img src="./screenshots/Screenshot_1572517199.png" width="270" height="550">
+<img src="./screenshots/Screenshot_1583966804.png" width="360" height="640"> <img src="./screenshots/Screenshot_1583966809.png" width="360" height="640"> <img src="./screenshots/Screenshot_1583966836.png" width="360" height="640"> <img src="./screenshots/Screenshot_1583319314.png" width="360" height="640"> <img src="./screenshots/Screenshot_1583319322.png" width="360" height="640"> <img src="./screenshots/Screenshot_1583319337.png" width="360" height="640">
 
 ## License
 
-    Copyright 2019 Oleh Kapustianov
+    Copyright 2020 Oleh Kapustianov
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
