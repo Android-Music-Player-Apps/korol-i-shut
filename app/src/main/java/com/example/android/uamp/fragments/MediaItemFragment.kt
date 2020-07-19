@@ -70,6 +70,14 @@ class MediaItemFragment : Fragment() {
         val context = activity ?: return
         mediaId = arguments?.getString(MEDIA_ID_ARG) ?: return
 
+        mainActivityViewModel = ViewModelProviders
+            .of(context, InjectorUtils.provideMainActivityViewModel(context))
+            .get(MainActivityViewModel::class.java)
+
+        mediaItemFragmentViewModel = ViewModelProviders
+            .of(this, InjectorUtils.provideMediaItemFragmentViewModel(context, mediaId))
+            .get(MediaItemFragmentViewModel::class.java)
+
         mediaItemFragmentViewModel.mediaItems.observe(viewLifecycleOwner,
                 Observer { list ->
                     binding.loadingSpinner.visibility =
@@ -80,7 +88,7 @@ class MediaItemFragment : Fragment() {
                 Observer { error ->
                     binding.networkError.visibility = if (error) View.VISIBLE else View.GONE
                     if (error) {
-                        loadingSpinner.visibility = View.GONE
+                        binding.loadingSpinner.visibility = View.GONE
                     }
                 })
 
