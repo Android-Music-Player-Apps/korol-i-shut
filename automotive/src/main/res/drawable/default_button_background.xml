@@ -15,13 +15,12 @@
   ~ limitations under the License.
   -->
 <!-- Default background styles for car buttons when enabled/disabled. -->
-<ripple
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
     android:color="?attr/colorControlHighlight">
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="@dimen/car_button_radius"/>
-            <solid android:color="@color/colorAccent"/>
+            <corners android:radius="@dimen/car_button_radius" />
+            <solid android:color="@color/colorAccent" />
         </shape>
     </item>
 </ripple>

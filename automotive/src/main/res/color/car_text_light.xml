@@ -16,9 +16,6 @@
 -->
 <!-- Default text colors for car buttons when enabled/disabled. -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_enabled="false"
-        android:alpha="0.36"
-        android:color="@android:color/white"/>
-    <item android:color="@android:color/white"
-        android:alpha="0.72" />
+    <item android:alpha="0.36" android:color="@android:color/white" android:state_enabled="false" />
+    <item android:alpha="0.72" android:color="@android:color/white" />
 </selector>

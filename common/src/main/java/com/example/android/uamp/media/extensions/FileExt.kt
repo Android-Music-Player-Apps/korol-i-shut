@@ -28,11 +28,11 @@ import java.io.File
  * Returns a Content Uri for the AlbumArtContentProvider
  */
 fun File.asAlbumArtContentUri(authority: String = AUTHORITY): Uri {
-  return Uri.Builder()
-    .scheme(ContentResolver.SCHEME_CONTENT)
-    .authority(authority)
-    .appendPath(this.path)
-    .build()
+    return Uri.Builder()
+        .scheme(ContentResolver.SCHEME_CONTENT)
+        .authority(authority)
+        .appendPath(this.path)
+        .build()
 }
 
 private const val AUTHORITY = "com.example.android.uamp.media.library.provider.123"

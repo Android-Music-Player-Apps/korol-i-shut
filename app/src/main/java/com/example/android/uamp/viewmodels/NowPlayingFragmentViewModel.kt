@@ -48,8 +48,8 @@ import com.example.android.uamp.media.extensions.title
  * resources.
  */
 class NowPlayingFragmentViewModel(
-        private val app: Application,
-        musicServiceConnection: MusicServiceConnection
+    private val app: Application,
+    musicServiceConnection: MusicServiceConnection
 ) : AndroidViewModel(app) {
 
     /**
@@ -84,7 +84,7 @@ class NowPlayingFragmentViewModel(
         postValue(0L)
     }
     val mediaButtonRes = MutableLiveData<Int>().apply {
-        postValue(com.example.android.uamp.R.drawable.ic_album_black_24dp)
+        postValue(R.drawable.ic_album_black_24dp)
     }
 
     private var updatePosition = true
@@ -168,9 +168,9 @@ class NowPlayingFragmentViewModel(
     ) {
 
         // Only update media item once we have duration available
-        if (mediaMetadata.duration != 0L) {
+        if (mediaMetadata.duration != 0L && mediaMetadata.id != null) {
             val nowPlayingMetadata = NowPlayingMetadata(
-                mediaMetadata.id,
+                mediaMetadata.id!!,
                 mediaMetadata.albumArtUri,
                 mediaMetadata.title?.trim(),
                 mediaMetadata.displaySubtitle?.trim(),

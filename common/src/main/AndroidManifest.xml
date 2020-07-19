@@ -40,7 +40,7 @@
         <provider
             android:name=".library.AlbumArtContentProvider"
             android:authorities="@string/provider_authorities"
-            android:exported="true"/>
+            android:exported="true" />
 
     </application>
 </manifest>

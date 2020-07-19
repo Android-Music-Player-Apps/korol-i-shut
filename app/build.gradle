@@ -45,9 +45,12 @@ android {
             useSupportLibrary true
         }
     }
-    buildFeatures{
-        dataBinding = true
+
+    buildFeatures {
+        viewBinding true
+        dataBinding true
     }
+
     buildTypes {
         release {
             minifyEnabled false
