@@ -1,22 +1,16 @@
-Android Music Player Apps
+Король и Шут / King And Jester
 =====================================
 
-Android online music player applications based on [uamp (Universal Android Music Player)](https://github.com/android/uamp). 
-These include the full discography of legendary Soviet & Russian rock bands King And Jester / [Король и Шут](https://ru.wikipedia.org/wiki/%D0%9A%D0%BE%D1%80%D0%BE%D0%BB%D1%8C_%D0%B8_%D0%A8%D1%83%D1%82), Kino Viktor Tsoi / [Кино Виктор Цой](https://ru.wikipedia.org/wiki/%D0%9A%D0%B8%D0%BD%D0%BE_(%D0%B3%D1%80%D1%83%D0%BF%D0%BF%D0%B0)).
+Android online music player application based on the [uamp (Universal Android Music Player)](https://github.com/android/uamp). 
+It includes the full discography of a legendary Russian punk rock band King And Jester / [Король и Шут](https://ru.wikipedia.org/wiki/%D0%9A%D0%BE%D1%80%D0%BE%D0%BB%D1%8C_%D0%B8_%D0%A8%D1%83%D1%82).
 
-## Download Links (2)
-
-### King And Jester / Король и Шут
+## Download Link
 
 [__Direct link to Google Play__](https://play.google.com/store/apps/details?id=com.olehka.korolishut) is the fastest way to install the application 'King And Jester' on any supported Android device.
 
-### Kino Viktor Tsoi / Кино Виктор Цой
-
-[__Direct link to Google Play__](https://play.google.com/store/apps/details?id=com.olehka.tsoikinoband) is the fastest way to install the application 'Kino Viktor Tsoi' on any supported Android device.
-
 ## Screenshots
 
-<img src="./screenshots/Screenshot_1583966804.png" width="360" height="640"> <img src="./screenshots/Screenshot_1583966809.png" width="360" height="640"> <img src="./screenshots/Screenshot_1583966836.png" width="360" height="640"> <img src="./screenshots/Screenshot_1583319314.png" width="360" height="640"> <img src="./screenshots/Screenshot_1583319322.png" width="360" height="640"> <img src="./screenshots/Screenshot_1583319337.png" width="360" height="640">
+<img src="https://raw.githubusercontent.com/Android-Music-Player-Apps/korol-i-shut/master/screenshots/Screenshot_1583966809.png" width="360" height="640"> <img src="https://raw.githubusercontent.com/Android-Music-Player-Apps/korol-i-shut/master/screenshots/Screenshot_1583966836.png" width="360" height="640"> <img src="https://github.com/Android-Music-Player-Apps/korol-i-shut/raw/master/screenshots/Screenshot_1583966804.png" width="360" height="640">
 
 ## License
 
