@@ -15,8 +15,8 @@ SITE = "https://www.kinomannia.ru/"
 URL_PREFIX = "https://firebasestorage.googleapis.com/v0/b/bucket-tsoi-kino/o/"
 URL_SUFFIX = "?alt=media"
 IMAGE_COVER = "front.jpg"
-LOCAL_PATH = "/Users/olehka/Desktop/Media/Music/Кино (Виктор Цой) - Дискография (1982-1990) [Remastered]/"
-ID_PREFIX = "tsoi-kino-id"
+LOCAL_PATH = "/Users/olehka/Desktop/Media/Music/Кино/2012 - Атаман/"
+ID_PREFIX = "tsoi-ataman-id"
 
 track_dict = OrderedDict()
 track_dict['id'] = ''
@@ -106,7 +106,7 @@ for path in mp3_paths:
     catalog_list.append(dict)
     index += 1
 
-with io.open('catalog.json', 'w') as outfile:
+with io.open('output.json', 'w') as outfile:
     out_dict = { "music": catalog_list }
     string = json.dumps(out_dict, ensure_ascii = False, indent = 2)
     outfile.write(string)

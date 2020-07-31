@@ -8,6 +8,7 @@
 
 # Generated files
 build/
+script/**/*.json
 
 # Extra (custom) settings
 extra-settings.gradle

@@ -17,10 +17,10 @@ IMAGE_COVER = "cover.jpg"
 # CONFIG
 URL_PREFIX = "https://firebasestorage.googleapis.com/v0/b/korol-i-shut.appspot.com/o/"
 URL_SUFFIX = "?alt=media"
-LOCAL_PATH = "/Users/olehka/Desktop/Media/Music/Король и Шут/2007 - Страшные Сказки (2007, Никитин)/"
-ID_PREFIX = "strashnye_skazki"
-ALBUM = "2007 - Страшные Сказки"
-REMOTE_ALBUM = "2007_Strashnye_skazki%2F"
+LOCAL_PATH = "/Users/olehka/Desktop/Media/Music/Король и Шут/Контора - Ересь (1990)/"
+ID_PREFIX = "kontora_eres"
+ALBUM = "1990 - Контора Ересь"
+REMOTE_ALBUM = "1990_Kontora_Eres%2F"
 
 track_dict = OrderedDict()
 track_dict['id'] = ''
@@ -90,7 +90,7 @@ for mp3_f in mp3_files:
     index += 1
 
 # print(json.dumps(catalog_list, ensure_ascii = False, indent = 2))
-with io.open('output.txt', 'w') as outfile:
+with io.open('output.json', 'w') as outfile:
     temp = json.dumps(catalog_list, ensure_ascii = False, indent = 2)
     # outfile.write(temp.decode('utf-8'))
     outfile.write(temp)
