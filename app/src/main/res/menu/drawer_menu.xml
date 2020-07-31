@@ -16,7 +16,7 @@
         <item
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_outline_insert_emoticon_24px"
-            android:title="@string/about_developer" />
+            android:title="@string/about_project" />
         <item
             android:id="@+id/nav_privacy_policy"
             android:icon="@drawable/ic_baseline_lock_open_24px"

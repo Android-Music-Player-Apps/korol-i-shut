@@ -72,7 +72,7 @@ abstract class DrawerActivity : AppCompatActivity() {
                     openWebView(getString(R.string.link_to_wiki_url))
                 }
                 R.id.nav_about -> {
-                    openWebView(getString(R.string.about_developer_url))
+                    openWebView(getString(R.string.about_project_url))
                 }
                 R.id.nav_privacy_policy -> {
                     openWebBrowserActivity(getString(R.string.privacy_policy_url))
