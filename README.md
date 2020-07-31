@@ -12,6 +12,11 @@ It includes the full discography of a legendary Russian punk rock band King And 
 
 <img src="https://raw.githubusercontent.com/Android-Music-Player-Apps/korol-i-shut/master/screenshots/Screenshot_1583966809.png" width="360" height="640"> <img src="https://raw.githubusercontent.com/Android-Music-Player-Apps/korol-i-shut/master/screenshots/Screenshot_1583966836.png" width="360" height="640"> <img src="https://github.com/Android-Music-Player-Apps/korol-i-shut/raw/master/screenshots/Screenshot_1583966804.png" width="360" height="640">
 
+## Privacy policy
+
+Adding a privacy policy to your app's store listing helps provide transparency about how you treat sensitive user and device data.
+[Link to the privacy policy of the King And Jester app](privacy_policy.html).
+
 ## License
 
     Copyright 2020 Oleh Kapustianov
