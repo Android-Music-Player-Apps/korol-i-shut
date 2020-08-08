@@ -24,7 +24,7 @@
     <string name="album_art_alt">Album art</string>
     <string name="duration_unknown">--:--</string>
     <string name="duration_format">%d:%02d</string>
-    <string name="albums">Albums</string>
+    <string name="discography">Discography</string>
     <string name="official_website">Official website</string>
     <string name="link_to_wiki">Page on Wikipedia</string>
     <string name="about_project">About project</string>

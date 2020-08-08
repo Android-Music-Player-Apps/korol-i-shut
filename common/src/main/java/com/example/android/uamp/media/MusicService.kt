@@ -34,6 +34,7 @@ import com.example.android.uamp.media.library.BrowseTree
 import com.example.android.uamp.media.library.JsonSource
 import com.example.android.uamp.media.library.MEDIA_SEARCH_SUPPORTED
 import com.example.android.uamp.media.library.MusicSource
+import com.example.android.uamp.media.library.UAMP_ALBUMS_ROOT
 import com.example.android.uamp.media.library.UAMP_BROWSABLE_ROOT
 import com.example.android.uamp.media.library.UAMP_EMPTY_ROOT
 import com.google.android.exoplayer2.C
@@ -241,7 +242,7 @@ open class MusicService : MediaBrowserServiceCompat() {
 
         return if (isKnownCaller) {
             // The caller is allowed to browse, so return the root.
-            BrowserRoot(UAMP_BROWSABLE_ROOT, rootExtras)
+            BrowserRoot(UAMP_ALBUMS_ROOT, rootExtras)
         } else {
             /**
              * Unknown caller. There are two main ways to handle this:
