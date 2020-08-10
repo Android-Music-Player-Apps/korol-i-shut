@@ -18,11 +18,10 @@ package com.example.android.uamp.fragments
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
+import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -34,10 +33,10 @@ import com.example.android.uamp.utils.InjectorUtils
 import com.example.android.uamp.viewmodels.MainActivityViewModel
 import com.example.android.uamp.viewmodels.NowPlayingFragmentViewModel
 import com.example.android.uamp.viewmodels.NowPlayingFragmentViewModel.NowPlayingMetadata
-import com.google.android.gms.ads.AdListener
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdSize
 import com.google.android.gms.ads.AdView
+import kotlinx.android.synthetic.main.fragment_nowplaying.adContainer
 
 
 /**
@@ -46,12 +45,29 @@ import com.google.android.gms.ads.AdView
 class NowPlayingFragment : Fragment() {
     private lateinit var mainActivityViewModel: MainActivityViewModel
     private lateinit var nowPlayingViewModel: NowPlayingFragmentViewModel
+    private lateinit var adView: AdView
 
     lateinit var binding: FragmentNowplayingBinding
 
-    companion object {
-        fun newInstance() = NowPlayingFragment()
-    }
+    private var initialLayoutComplete = false
+    // Determine the screen width (less decorations) to use for the ad width.
+    // If the ad hasn't been laid out, default to the full screen width.
+    private val adSize: AdSize
+        get() {
+            val display = activity?.windowManager?.defaultDisplay
+            val outMetrics = DisplayMetrics()
+            display?.getMetrics(outMetrics)
+
+            val density = outMetrics.density
+
+            var adWidthPixels = adContainer.width.toFloat()
+            if (adWidthPixels == 0f) {
+                adWidthPixels = outMetrics.widthPixels.toFloat()
+            }
+
+            val adWidth = (adWidthPixels / density).toInt()
+            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, adWidth)
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -102,7 +118,24 @@ class NowPlayingFragment : Fragment() {
         // Initialize playback duration and position to zero
         binding.duration.text = NowPlayingMetadata.timestampToMSS(context, 0L)
         binding.position.text = NowPlayingMetadata.timestampToMSS(context, 0L)
-        initBannerAdView(view)
+
+        // Initialize banner ad
+        initAdaptiveBannerAd()
+    }
+
+    override fun onPause() {
+        adView.pause()
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        adView.resume()
+    }
+
+    override fun onDestroy() {
+        adView.destroy()
+        super.onDestroy()
     }
 
     /**
@@ -121,37 +154,35 @@ class NowPlayingFragment : Fragment() {
         duration.text = metadata.duration
     }
 
-    private fun initBannerAdView(view: View) {
-        val adRequest = AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .addTestDevice(MOTOROLA_AD_TEST_ID)
-                .build()
+    private fun initAdaptiveBannerAd() {
+        adView = AdView(context)
+        adContainer.addView(adView)
 
-        val adListenerImpl = object : AdListener() {
-
-            override fun onAdLoaded() {
-                super.onAdLoaded()
-                Log.d("Ads", "onAdLoaded")
-            }
-
-            override fun onAdFailedToLoad(p0: Int) {
-                super.onAdFailedToLoad(p0)
-                Log.d("Ads", "onAdFailedToLoad: $p0")
+        // Since we're loading the banner based on the adContainerView size, we need to wait
+        // until this view is laid out before we can get the width.
+        adContainer.viewTreeObserver.addOnGlobalLayoutListener {
+            if (!initialLayoutComplete) {
+                initialLayoutComplete = true
+                loadBanner()
             }
         }
+    }
 
-        val adView = AdView(context).apply {
-            adSize = AdSize.SMART_BANNER
-            adUnitId = getString(R.string.now_playing_ad_unit_id)
-            adListener = adListenerImpl
-        }
+    private fun loadBanner() {
+        adView.adUnitId = getString(R.string.now_playing_ad_unit_id)
+        adView.adSize = adSize
 
-        view.findViewById<FrameLayout>(R.id.adContainer).apply {
-            addView(adView)
-        }
+        // Create an ad request.
+        val adRequest = AdRequest.Builder().build()
 
+        // Start loading the ad in the background.
         adView.loadAd(adRequest)
     }
-}
 
-const val MOTOROLA_AD_TEST_ID = "9D5E2A9D2650549F32FBDB849158C645"
+    companion object {
+        // This is an ad unit ID for a test ad. Replace with your own banner ad unit ID.
+        private val AD_UNIT_ID = "ca-app-pub-3940256099942544/9214589741"
+
+        fun newInstance() = NowPlayingFragment()
+    }
+}

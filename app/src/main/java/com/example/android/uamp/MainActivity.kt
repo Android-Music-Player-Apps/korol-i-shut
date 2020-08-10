@@ -25,7 +25,9 @@ import com.example.android.uamp.media.MusicService
 import com.example.android.uamp.utils.Event
 import com.example.android.uamp.utils.InjectorUtils
 import com.example.android.uamp.viewmodels.MainActivityViewModel
+import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.RequestConfiguration
 
 
 class MainActivity : DrawerActivity() {
@@ -37,7 +39,10 @@ class MainActivity : DrawerActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setToolbar()
+
+        // Initialize the Mobile Ads SDK.
         initializeMobileAds()
+        setMobileAdsConfig()
 
         drawerLayout = findViewById(R.id.drawer_layout)
         navigationView = findViewById(R.id.nav_view)
@@ -110,5 +115,17 @@ class MainActivity : DrawerActivity() {
         return supportFragmentManager.findFragmentByTag(mediaId) as MediaItemFragment?
     }
 
-    private fun initializeMobileAds() = MobileAds.initialize(this, getString(R.string.admob_app_id))
+    private fun initializeMobileAds() = MobileAds.initialize(this) {}
+
+    private fun setMobileAdsConfig() {
+        // Set your test devices. Check your logcat output for the hashed device ID to
+        // get test ads on a physical device. e.g.
+        // "Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
+        // to get test ads on this device."
+        MobileAds.setRequestConfiguration(
+            RequestConfiguration.Builder()
+                .setTestDeviceIds(listOf(AdRequest.DEVICE_ID_EMULATOR))
+                .build()
+        )
+    }
 }
