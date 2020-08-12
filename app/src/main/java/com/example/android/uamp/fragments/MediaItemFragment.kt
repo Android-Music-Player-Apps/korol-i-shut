@@ -21,15 +21,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.android.uamp.MediaItemAdapter
+import com.example.android.uamp.MediaItemData
 import com.example.android.uamp.databinding.FragmentMediaitemListBinding
 import com.example.android.uamp.utils.InjectorUtils
 import com.example.android.uamp.viewmodels.MainActivityViewModel
 import com.example.android.uamp.viewmodels.MediaItemFragmentViewModel
+import com.google.android.gms.ads.AdListener
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.InterstitialAd
 
 /**
  * A fragment representing a list of MediaItems.
@@ -39,9 +41,16 @@ class MediaItemFragment : Fragment() {
     private lateinit var mainActivityViewModel: MainActivityViewModel
     private lateinit var mediaItemFragmentViewModel: MediaItemFragmentViewModel
     private lateinit var binding: FragmentMediaitemListBinding
+    private lateinit var interstitialAd: InterstitialAd
+    private lateinit var clickedItem: MediaItemData
 
     private val listAdapter = MediaItemAdapter { clickedItem ->
-        mainActivityViewModel.mediaItemClicked(clickedItem)
+        this.clickedItem = clickedItem
+        if (::interstitialAd.isInitialized && interstitialAd.isLoaded) {
+            interstitialAd.show()
+        } else {
+            startNextScreen()
+        }
     }
 
     companion object {
@@ -94,7 +103,31 @@ class MediaItemFragment : Fragment() {
 
         // Set the adapter
         binding.list.adapter = listAdapter
+
+        // Create the InterstitialAd and set it up.
+        if ((0..9).random() > 8) createInterstitialAd()
+    }
+
+    private fun createInterstitialAd() {
+        interstitialAd = InterstitialAd(context).apply {
+            adUnitId = AD_UNIT_ID
+            adListener = (object : AdListener() {
+                override fun onAdLoaded() { }
+
+                override fun onAdFailedToLoad(errorCode: Int) { }
+
+                override fun onAdClosed() {
+                    startNextScreen()
+                }
+            })
+            loadAd(AdRequest.Builder().build())
+        }
+    }
+
+    private fun startNextScreen() {
+        mainActivityViewModel.mediaItemClicked(clickedItem)
     }
 }
 
 private const val MEDIA_ID_ARG = "com.example.android.uamp.fragments.MediaItemFragment.MEDIA_ID"
+private const val AD_UNIT_ID = "ca-app-pub-3940256099942544/1033173712"
