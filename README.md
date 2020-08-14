@@ -19,7 +19,7 @@ Adding a privacy policy to your app's store listing helps provide transparency a
 
 ## License
 
-    Copyright 2020 Oleh Kapustianov
+    Copyright 2020 Android Music Player Apps
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
