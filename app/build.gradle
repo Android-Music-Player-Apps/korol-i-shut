@@ -82,6 +82,7 @@ android {
 
 dependencies {
     implementation project(':common')
+    implementation project(':nativetemplates')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 

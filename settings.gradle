@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+include ':nativetemplates'
 
 /*
  * Allow for customization of the modules to include through an extra file that is not included
