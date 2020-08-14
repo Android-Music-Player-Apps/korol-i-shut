@@ -102,6 +102,12 @@ class AdMediaItemAdapter(
         notifyDataSetChanged()
     }
 
+    fun destroyNativeAd() {
+        ads.forEach { nativeAd ->
+            nativeAd.destroy()
+        }
+    }
+
     private fun isAdvertisement(position: Int): Boolean {
         return position == 0 && ads.isNotEmpty()
     }

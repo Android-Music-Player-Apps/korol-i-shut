@@ -23,7 +23,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.example.android.uamp.MediaItemAdapter
 import com.example.android.uamp.MediaItemData
 import com.example.android.uamp.ads.AdMediaItemAdapter
 import com.example.android.uamp.databinding.FragmentMediaitemListBinding
@@ -110,7 +109,12 @@ class MediaItemFragment : Fragment() {
         if ((0..9).random() > 8) createInterstitialAd()
 
         // Initialize NativeAd
-        initNativeAd()
+        createNativeAd()
+    }
+
+    override fun onDestroy() {
+        listAdapter.destroyNativeAd()
+        super.onDestroy()
     }
 
     private fun createInterstitialAd() {
@@ -129,7 +133,7 @@ class MediaItemFragment : Fragment() {
         }
     }
 
-    private fun initNativeAd() {
+    private fun createNativeAd() {
         val builder = AdLoader.Builder(context, NATIVE_AD_UNIT_ID)
         builder.forUnifiedNativeAd { unifiedNativeAd ->
             // OnUnifiedNativeAdLoadedListener implementation.
@@ -139,6 +143,9 @@ class MediaItemFragment : Fragment() {
                 unifiedNativeAd.destroy()
                 return@forUnifiedNativeAd
             }
+            // You must call destroy on old ads when you are done with them,
+            // otherwise you will have a memory leak.
+            listAdapter.destroyNativeAd()
             listAdapter.setNativeAd(unifiedNativeAd)
         }
         val adLoader = builder.build()
