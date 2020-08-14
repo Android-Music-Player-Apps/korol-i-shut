@@ -107,7 +107,7 @@ class MediaItemFragment : Fragment() {
         binding.list.adapter = listAdapter
 
         // Create the InterstitialAd and set it up.
-        if ((0..9).random() > 7) createInterstitialAd()
+        if ((0..9).random() > 8) createInterstitialAd()
 
         // Initialize NativeAd
         initNativeAd()
