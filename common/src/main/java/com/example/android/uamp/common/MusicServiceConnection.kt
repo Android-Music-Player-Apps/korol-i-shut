@@ -83,6 +83,10 @@ class MusicServiceConnection(context: Context, serviceComponent: ComponentName) 
         mediaBrowser.unsubscribe(parentId, callback)
     }
 
+    fun search(query: String, callback: MediaBrowserCompat.SearchCallback) {
+        mediaBrowser.search(query, Bundle.EMPTY, callback)
+    }
+
     fun sendCommand(command: String, parameters: Bundle?) =
         sendCommand(command, parameters) { _, _ -> }
 

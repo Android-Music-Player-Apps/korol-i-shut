@@ -4,8 +4,10 @@ import android.content.Intent
 import android.net.Uri
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.ShareActionProvider
 import androidx.appcompat.widget.Toolbar
 import androidx.core.app.ShareCompat
@@ -21,6 +23,7 @@ abstract class DrawerActivity : AppCompatActivity() {
 
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationView: NavigationView
+    lateinit var searchView: SearchView
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
@@ -28,15 +31,19 @@ abstract class DrawerActivity : AppCompatActivity() {
             shareActionProvider = MenuItemCompat.getActionProvider(it) as ShareActionProvider?
         }
         val shareIntent = ShareCompat.IntentBuilder.from(this)
-                .setType("text/plain").setText(BuildConfig.URL_TO_SHARE).intent
+            .setType("text/plain").setText(BuildConfig.URL_TO_SHARE).intent
         shareActionProvider?.setShareIntent(shareIntent)
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
             android.R.id.home -> {
                 drawerLayout.openDrawer(GravityCompat.START)
+                true
+            }
+            R.id.search -> {
+                searchView.visibility = View.VISIBLE
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -83,10 +90,13 @@ abstract class DrawerActivity : AppCompatActivity() {
         }
     }
 
-    fun setNavigationItemSelected(index: Int, flag: Boolean = true) = navigationView.menu.getItem(index).setChecked(flag)
+    fun setNavigationItemSelected(index: Int, flag: Boolean = true) =
+        navigationView.menu.getItem(index).setChecked(flag)
 
     fun setToolbar() {
-        val toolbar: Toolbar = findViewById(R.id.toolbar)
+        val toolbar: Toolbar = findViewById(R.id.toolbar_search)
+        searchView = findViewById(R.id.searchView)
+
         setSupportActionBar(toolbar)
         val actionbar: ActionBar? = supportActionBar
         actionbar?.apply {

@@ -110,6 +110,9 @@ class MediaItemFragment : Fragment() {
 
         // Initialize NativeAd
         createNativeAd()
+
+        // Test search
+        mediaItemFragmentViewModel.search("Король")
     }
 
     override fun onDestroy() {
