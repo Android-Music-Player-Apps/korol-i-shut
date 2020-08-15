@@ -77,7 +77,6 @@ class MainActivity : DrawerActivity() {
                 )
                 if (fragmentRequest.backStack) transaction.addToBackStack(null)
                 transaction.commit()
-                clearSearchViewFocus()
             }
         })
 
@@ -101,6 +100,11 @@ class MainActivity : DrawerActivity() {
             it?.getContentIfNotHandled()?.let { mediaId ->
                 navigateToMediaItem(mediaId)
             }
+        })
+
+        viewModel.clearFocusSearch.observe(this, Observer {
+            searchView.clearFocus()
+            dismissKeyboard(searchView)
         })
     }
 
@@ -163,6 +167,7 @@ class MainActivity : DrawerActivity() {
                     }
 
                     override fun onQueryTextSubmit(query: String): Boolean {
+                        clearFocus()
                         dismissKeyboard(this@apply)
                         return true
                     }
@@ -179,10 +184,6 @@ class MainActivity : DrawerActivity() {
                 return@setOnCloseListener false
             }
         }
-    }
-
-    private fun clearSearchViewFocus() {
-        searchView.clearFocus()
     }
 
     private fun showKeyboard(view: View) {

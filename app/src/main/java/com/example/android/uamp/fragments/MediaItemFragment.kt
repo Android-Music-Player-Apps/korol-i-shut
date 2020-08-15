@@ -115,6 +115,9 @@ class MediaItemFragment : Fragment() {
 
         // Initialize NativeAd
         createNativeAd()
+
+        // Clear focus
+        mainActivityViewModel.clearSearchFocus()
     }
 
     override fun onDestroy() {

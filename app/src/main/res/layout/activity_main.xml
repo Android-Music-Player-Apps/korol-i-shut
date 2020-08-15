@@ -48,7 +48,10 @@
                 android:searchHintIcon="@null"
                 android:searchIcon="@null"
                 android:visibility="gone"
-                tools:targetApi="lollipop_mr1">
+                app:defaultQueryHint="@string/search_music"
+                app:queryHint="@string/search_music"
+                tools:targetApi="lollipop_mr1"
+                tools:visibility="visible">
 
             </androidx.appcompat.widget.SearchView>
         </androidx.appcompat.widget.Toolbar>
