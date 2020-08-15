@@ -23,7 +23,6 @@ abstract class DrawerActivity : AppCompatActivity() {
 
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationView: NavigationView
-    lateinit var searchView: SearchView
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.toolbar_menu, menu)
@@ -40,10 +39,6 @@ abstract class DrawerActivity : AppCompatActivity() {
         return when (item.itemId) {
             android.R.id.home -> {
                 drawerLayout.openDrawer(GravityCompat.START)
-                true
-            }
-            R.id.search -> {
-                searchView.visibility = View.VISIBLE
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -95,8 +90,6 @@ abstract class DrawerActivity : AppCompatActivity() {
 
     fun setToolbar() {
         val toolbar: Toolbar = findViewById(R.id.toolbar_search)
-        searchView = findViewById(R.id.searchView)
-
         setSupportActionBar(toolbar)
         val actionbar: ActionBar? = supportActionBar
         actionbar?.apply {

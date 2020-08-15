@@ -46,6 +46,8 @@ class MediaItemFragmentViewModel(
     musicServiceConnection: MusicServiceConnection
 ) : ViewModel() {
 
+    private var searchQuery: String = ""
+
     /**
      * Use a backing property so consumers of mediaItems only get a [LiveData] instance so
      * they don't inadvertently modify it.
@@ -162,7 +164,15 @@ class MediaItemFragmentViewModel(
     }
 
     fun search(query: String) {
-        musicServiceConnection.search(query, searchCallback)
+        if (query == searchQuery) {
+            return
+        }
+        searchQuery = query
+        if (query.isNotEmpty()) {
+            musicServiceConnection.search(query, searchCallback)
+        } else {
+            musicServiceConnection.resubscribe(mediaId, subscriptionCallback)
+        }
     }
 
     private fun getResourceForMediaId(mediaId: String): Int {
