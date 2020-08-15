@@ -40,4 +40,5 @@
     <string name="about_project_url" translatable="false"></string>
     <string name="privacy_policy_url" translatable="false"></string>
     <string name="logo">Logo</string>
+    <string name="search_music">Search music</string>
 </resources>

@@ -121,6 +121,9 @@ class NowPlayingFragment : Fragment() {
 
         // Initialize banner ad
         initAdaptiveBannerAd()
+
+        // Clear focus
+        mainActivityViewModel.clearSearchFocus()
     }
 
     override fun onPause() {

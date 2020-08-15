@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright 2017 Google Inc. All rights reserved.
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,11 +31,30 @@
         tools:context="com.example.android.uamp.MainActivity">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbar_search"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
+            android:layout_height="?actionBarSize"
             android:background="?attr/colorPrimary"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:iconifiedByDefault="false"
+                android:imeOptions="actionDone|flagNoExtractUi"
+                android:queryBackground="@color/transparent"
+                android:queryHint="@string/search_music"
+                android:searchHintIcon="@null"
+                android:searchIcon="@null"
+                android:visibility="gone"
+                app:defaultQueryHint="@string/search_music"
+                app:queryHint="@string/search_music"
+                tools:targetApi="lollipop_mr1"
+                tools:visibility="visible">
+
+            </androidx.appcompat.widget.SearchView>
+        </androidx.appcompat.widget.Toolbar>
 
         <FrameLayout
             android:id="@+id/fragmentContainer"

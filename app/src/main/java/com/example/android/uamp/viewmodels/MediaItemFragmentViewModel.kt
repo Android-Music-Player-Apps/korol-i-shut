@@ -16,8 +16,10 @@
 
 package com.example.android.uamp.viewmodels
 
+import android.os.Bundle
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaBrowserCompat.MediaItem
+import android.support.v4.media.MediaBrowserCompat.SearchCallback
 import android.support.v4.media.MediaBrowserCompat.SubscriptionCallback
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.PlaybackStateCompat
@@ -44,6 +46,8 @@ class MediaItemFragmentViewModel(
     musicServiceConnection: MusicServiceConnection
 ) : ViewModel() {
 
+    private var searchQuery: String = ""
+
     /**
      * Use a backing property so consumers of mediaItems only get a [LiveData] instance so
      * they don't inadvertently modify it.
@@ -67,6 +71,23 @@ class MediaItemFragmentViewModel(
                     child.description.iconUri!!,
                     child.isBrowsable,
                     getResourceForMediaId(child.mediaId!!)
+                )
+            }
+            _mediaItems.postValue(itemsList)
+        }
+    }
+
+    private val searchCallback = object : SearchCallback() {
+        override fun onSearchResult(query: String, extras: Bundle?, items: MutableList<MediaItem>) {
+            val itemsList = items.map { item ->
+                val subtitle = item.description.subtitle ?: ""
+                MediaItemData(
+                    item.mediaId!!,
+                    item.description.title.toString(),
+                    subtitle.toString(),
+                    item.description.iconUri!!,
+                    item.isBrowsable,
+                    getResourceForMediaId(item.mediaId!!)
                 )
             }
             _mediaItems.postValue(itemsList)
@@ -140,6 +161,18 @@ class MediaItemFragmentViewModel(
 
         // And then, finally, unsubscribe the media ID that was being watched.
         musicServiceConnection.unsubscribe(mediaId, subscriptionCallback)
+    }
+
+    fun search(query: String) {
+        if (query == searchQuery) {
+            return
+        }
+        searchQuery = query
+        if (query.isNotEmpty()) {
+            musicServiceConnection.search(query, searchCallback)
+        } else {
+            musicServiceConnection.resubscribe(mediaId, subscriptionCallback)
+        }
     }
 
     private fun getResourceForMediaId(mediaId: String): Int {

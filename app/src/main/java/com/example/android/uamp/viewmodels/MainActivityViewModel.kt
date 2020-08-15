@@ -43,6 +43,12 @@ class MainActivityViewModel(
     private val musicServiceConnection: MusicServiceConnection
 ) : ViewModel() {
 
+    private val _searchQuery = MutableLiveData<String>()
+    val searchQuery: LiveData<String> get() = _searchQuery
+
+    private val _clearFocusSearch = MutableLiveData<Boolean>()
+    val clearFocusSearch: LiveData<Boolean> get() = _clearFocusSearch
+
     val rootMediaId: LiveData<String> =
         Transformations.map(musicServiceConnection.isConnected) { isConnected ->
             if (isConnected) {
@@ -157,6 +163,17 @@ class MainActivityViewModel(
         } else {
             transportControls.playFromMediaId(mediaId, null)
         }
+    }
+
+    fun onSearchQueryChanged(query: String) {
+        val newQuery = query.trim().takeIf { it.length >= 2 } ?: ""
+        if (newQuery != _searchQuery.value) {
+            _searchQuery.value = newQuery
+        }
+    }
+
+    fun clearSearchFocus() {
+        _clearFocusSearch.value = true
     }
 
     class Factory(

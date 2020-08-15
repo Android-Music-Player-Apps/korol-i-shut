@@ -101,6 +101,11 @@ class MediaItemFragment : Fragment() {
                         binding.loadingSpinner.visibility = View.GONE
                     }
                 })
+        mainActivityViewModel.searchQuery.observe(viewLifecycleOwner,
+            Observer { query ->
+                mediaItemFragmentViewModel.search(query)
+            }
+        )
 
         // Set the adapter
         binding.list.adapter = listAdapter
@@ -110,6 +115,9 @@ class MediaItemFragment : Fragment() {
 
         // Initialize NativeAd
         createNativeAd()
+
+        // Clear focus
+        mainActivityViewModel.clearSearchFocus()
     }
 
     override fun onDestroy() {

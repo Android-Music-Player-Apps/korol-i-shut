@@ -16,8 +16,14 @@
 
 package com.example.android.uamp
 
+import android.content.Context
 import android.media.AudioManager
 import android.os.Bundle
+import android.view.MenuItem
+import android.view.View
+import android.view.inputmethod.InputMethodManager
+import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.android.uamp.fragments.MediaItemFragment
@@ -33,12 +39,14 @@ import com.google.android.gms.ads.RequestConfiguration
 class MainActivity : DrawerActivity() {
 
     private lateinit var viewModel: MainActivityViewModel
+    private lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setToolbar()
+        setSearchView()
 
         // Initialize the Mobile Ads SDK.
         initializeMobileAds()
@@ -53,7 +61,8 @@ class MainActivity : DrawerActivity() {
         volumeControlStream = AudioManager.STREAM_MUSIC
 
         viewModel = ViewModelProvider(
-            this, InjectorUtils.provideMainActivityViewModel(this))
+            this, InjectorUtils.provideMainActivityViewModel(this)
+        )
             .get(MainActivityViewModel::class.java)
 
         /**
@@ -92,11 +101,29 @@ class MainActivity : DrawerActivity() {
                 navigateToMediaItem(mediaId)
             }
         })
+
+        viewModel.clearFocusSearch.observe(this, Observer {
+            searchView.clearFocus()
+            dismissKeyboard(searchView)
+        })
     }
 
     override fun onResume() {
         super.onResume()
         setNavigationItemSelected(0)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.search -> {
+                searchView.apply {
+                    visibility = View.VISIBLE
+                    isIconified = false
+                }
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun navigateToMediaItem(mediaId: String) {
@@ -127,5 +154,46 @@ class MainActivity : DrawerActivity() {
                 .setTestDeviceIds(listOf(AdRequest.DEVICE_ID_EMULATOR))
                 .build()
         )
+    }
+
+    private fun setSearchView() {
+        searchView = findViewById(R.id.searchView)
+        searchView.apply {
+            setOnQueryTextListener(
+                object : OnQueryTextListener {
+                    override fun onQueryTextChange(newText: String): Boolean {
+                        viewModel.onSearchQueryChanged(newText)
+                        return true
+                    }
+
+                    override fun onQueryTextSubmit(query: String): Boolean {
+                        clearFocus()
+                        dismissKeyboard(this@apply)
+                        return true
+                    }
+                }
+            )
+            // Set focus on the SearchView and open the keyboard
+            setOnQueryTextFocusChangeListener { view, hasFocus ->
+                if (hasFocus) {
+                    visibility = View.VISIBLE
+                    showKeyboard(view.findFocus())
+                }
+            }
+            setOnCloseListener {
+                visibility = View.GONE
+                return@setOnCloseListener false
+            }
+        }
+    }
+
+    private fun showKeyboard(view: View) {
+        val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.showSoftInput(view, InputMethodManager.SHOW_FORCED)
+    }
+
+    private fun dismissKeyboard(view: View) {
+        val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
 }
