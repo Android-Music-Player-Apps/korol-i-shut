@@ -173,6 +173,13 @@ class MainActivity : DrawerActivity() {
                     }
                 }
             )
+            // Set focus on the SearchView and open the keyboard
+            setOnQueryTextFocusChangeListener { view, hasFocus ->
+                if (hasFocus) {
+                    visibility = View.VISIBLE
+                    showKeyboard(view.findFocus())
+                }
+            }
             setOnCloseListener {
                 visibility = View.GONE
                 return@setOnCloseListener false
