@@ -19,6 +19,7 @@ package com.example.android.uamp
 import android.content.Context
 import android.media.AudioManager
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -31,19 +32,27 @@ import com.example.android.uamp.media.MusicService
 import com.example.android.uamp.utils.Event
 import com.example.android.uamp.utils.InjectorUtils
 import com.example.android.uamp.viewmodels.MainActivityViewModel
+import com.google.android.gms.cast.framework.CastButtonFactory
+import com.google.android.gms.cast.framework.CastContext
+import com.google.android.gms.dynamite.DynamiteModule
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
 
 
 class MainActivity : DrawerActivity() {
-
     private lateinit var viewModel: MainActivityViewModel
+    private var castContext: CastContext? = null
     private lateinit var searchView: SearchView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
         super.onCreate(savedInstanceState)
+
+        // Initialize the Cast context. This is required so that the media route button can be
+        // created in the AppBar
+        castContext = CastContext.getSharedInstance(this)
+
         setContentView(R.layout.activity_main)
         setToolbar()
         setSearchView()
@@ -124,6 +133,18 @@ class MainActivity : DrawerActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    @Override
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        super.onCreateOptionsMenu(menu)
+        menuInflater.inflate(R.menu.main_activity_menu, menu)
+
+        /**
+         * Set up a MediaRouteButton to allow the user to control the current media playback route
+         */
+        CastButtonFactory.setUpMediaRouteButton(this, menu, R.id.media_route_menu_item)
+        return true
     }
 
     private fun navigateToMediaItem(mediaId: String) {
