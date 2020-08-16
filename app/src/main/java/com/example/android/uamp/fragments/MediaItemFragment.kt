@@ -24,6 +24,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.example.android.uamp.MediaItemData
+import com.example.android.uamp.R
 import com.example.android.uamp.ads.AdMediaItemAdapter
 import com.example.android.uamp.databinding.FragmentMediaitemListBinding
 import com.example.android.uamp.utils.InjectorUtils
@@ -127,7 +128,7 @@ class MediaItemFragment : Fragment() {
 
     private fun createInterstitialAd() {
         interstitialAd = InterstitialAd(context).apply {
-            adUnitId = INTER_AD_UNIT_ID
+            adUnitId = getString(R.string.inter_media_item_ad_unit_id)
             adListener = (object : AdListener() {
                 override fun onAdLoaded() { }
 
@@ -142,7 +143,7 @@ class MediaItemFragment : Fragment() {
     }
 
     private fun createNativeAd() {
-        val builder = AdLoader.Builder(context, NATIVE_AD_UNIT_ID)
+        val builder = AdLoader.Builder(context, getString(R.string.native_media_item_ad_unit_id))
         builder.forUnifiedNativeAd { unifiedNativeAd ->
             // OnUnifiedNativeAdLoadedListener implementation.
             // If this callback occurs after the activity is destroyed, you must call

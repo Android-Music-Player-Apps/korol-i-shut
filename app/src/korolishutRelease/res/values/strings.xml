@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="now_playing_ad_unit_id" translatable="false">ca-app-pub-8081141113344620/3425002907</string>
+    <string name="banner_now_playing_ad_unit_id" translatable="false">ca-app-pub-8081141113344620/3425002907</string>
+    <string name="inter_media_item_ad_unit_id" translatable="false">ca-app-pub-8081141113344620/2066691370</string>
+    <string name="native_media_item_ad_unit_id" translatable="false">ca-app-pub-8081141113344620/3240172242</string>
 </resources>

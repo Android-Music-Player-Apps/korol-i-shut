@@ -66,15 +66,15 @@ android {
         korolishut {
             dimension "default"
             applicationId "com.olehka.korolishut"
-            versionCode 6
-            versionName "1.0"
+            versionCode 7
+            versionName "2.0"
             buildConfigField "String", "URL_TO_SHARE", "\"https://play.google.com/store/apps/details?id=com.olehka.korolishut\""
         }
         tsoikinoband {
             dimension "default"
             applicationId "com.olehka.tsoikinoband"
-            versionCode 1
-            versionName "0.1"
+            versionCode 2
+            versionName "2.0"
             buildConfigField "String", "URL_TO_SHARE", "\"https://play.google.com/store/apps/details?id=com.olehka.tsoikinoband\""
         }
     }

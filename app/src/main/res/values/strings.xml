@@ -35,8 +35,12 @@
     <string name="network_error_message">Music Service Connection Network Failure. \n\nWe apologise for the inconvenience. Help us to improve the service by writing positive feedback on the Google Play market. \n\nThank You!</string>
     <string name="network_error_message_free_plan">We apologise for the inconvenience. \n\nThe current Pricing Plan for this music storage is Free / 0$. According to its specs, there is a limit for Downloading (1 Gb / day). If You see this message, please wait until the next day, when the limit will be restarted. \n\nHelp us to improve the service by writing positive feedback on the Google Play market. Thank You!</string>
 
+<!-- Google AdMob-->
     <string name="admob_app_id" translatable="false">ca-app-pub-3940256099942544~3347511713</string>
-    <string name="now_playing_ad_unit_id" translatable="false"></string>
+    <string name="banner_now_playing_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/9214589741</string>
+    <string name="inter_media_item_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/1033173712</string>
+    <string name="native_media_item_ad_unit_id" translatable="false">ca-app-pub-3940256099942544/2247696110</string>
+
     <string name="official_website_url" translatable="false">https://github.com/android/uamp/blob/master/docs/FullGuide.md</string>
     <string name="link_to_wiki_url" translatable="false">https://github.com/android/uamp/blob/master/docs/FullGuide.md</string>
     <string name="about_project_url" translatable="false"></string>

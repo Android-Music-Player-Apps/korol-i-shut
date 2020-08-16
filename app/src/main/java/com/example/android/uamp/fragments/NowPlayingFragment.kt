@@ -172,7 +172,7 @@ class NowPlayingFragment : Fragment() {
     }
 
     private fun loadBanner() {
-        adView.adUnitId = getString(R.string.now_playing_ad_unit_id)
+        adView.adUnitId = getString(R.string.banner_now_playing_ad_unit_id)
         adView.adSize = adSize
 
         // Create an ad request.
@@ -183,9 +183,9 @@ class NowPlayingFragment : Fragment() {
     }
 
     companion object {
-        // This is an ad unit ID for a test ad. Replace with your own banner ad unit ID.
-        private val AD_UNIT_ID = "ca-app-pub-3940256099942544/9214589741"
-
         fun newInstance() = NowPlayingFragment()
     }
 }
+
+// This is an ad unit ID for a test ad. Replace with your own banner ad unit ID.
+private const val BANNER_AD_UNIT_ID = "ca-app-pub-3940256099942544/9214589741"

@@ -31,7 +31,7 @@
         tools:context="com.example.android.uamp.MainActivity">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar_search"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
             android:background="?attr/colorPrimary"

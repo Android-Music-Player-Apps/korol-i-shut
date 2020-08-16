@@ -2,17 +2,11 @@ package com.example.android.uamp
 
 import android.content.Intent
 import android.net.Uri
-import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.ShareActionProvider
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ShareCompat
 import androidx.core.view.GravityCompat
-import androidx.core.view.MenuItemCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.google.android.material.navigation.NavigationView
 
@@ -76,7 +70,7 @@ abstract class DrawerActivity : AppCompatActivity() {
         navigationView.menu.getItem(index).setChecked(flag)
 
     fun setToolbar() {
-        val toolbar: Toolbar = findViewById(R.id.toolbar_search)
+        val toolbar: Toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
         val actionbar: ActionBar? = supportActionBar
         actionbar?.apply {
