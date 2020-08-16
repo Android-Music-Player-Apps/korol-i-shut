@@ -25,6 +25,9 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
+import androidx.appcompat.widget.ShareActionProvider
+import androidx.core.app.ShareCompat
+import androidx.core.view.MenuItemCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.android.uamp.fragments.MediaItemFragment
@@ -32,18 +35,20 @@ import com.example.android.uamp.media.MusicService
 import com.example.android.uamp.utils.Event
 import com.example.android.uamp.utils.InjectorUtils
 import com.example.android.uamp.viewmodels.MainActivityViewModel
-import com.google.android.gms.cast.framework.CastButtonFactory
-import com.google.android.gms.cast.framework.CastContext
-import com.google.android.gms.dynamite.DynamiteModule
 import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.MobileAds
 import com.google.android.gms.ads.RequestConfiguration
+import com.google.android.gms.cast.framework.CastButtonFactory
+import com.google.android.gms.cast.framework.CastContext
 
 
 class MainActivity : DrawerActivity() {
+
     private lateinit var viewModel: MainActivityViewModel
-    private var castContext: CastContext? = null
     private lateinit var searchView: SearchView
+
+    private var castContext: CastContext? = null
+    private var shareActionProvider: ShareActionProvider? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(R.style.AppTheme)
@@ -122,6 +127,11 @@ class MainActivity : DrawerActivity() {
         setNavigationItemSelected(0)
     }
 
+    override fun onPause() {
+        dismissKeyboard(searchView)
+        super.onPause()
+    }
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.search -> {
@@ -135,15 +145,21 @@ class MainActivity : DrawerActivity() {
         }
     }
 
-    @Override
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         super.onCreateOptionsMenu(menu)
-        menuInflater.inflate(R.menu.main_activity_menu, menu)
+        menuInflater.inflate(R.menu.toolbar_menu, menu)
+
+        menu.findItem(R.id.share).also {
+            shareActionProvider = MenuItemCompat.getActionProvider(it) as ShareActionProvider?
+        }
+        val shareIntent = ShareCompat.IntentBuilder.from(this)
+            .setType("text/plain").setText(BuildConfig.URL_TO_SHARE).intent
+        shareActionProvider?.setShareIntent(shareIntent)
 
         /**
          * Set up a MediaRouteButton to allow the user to control the current media playback route
          */
-        CastButtonFactory.setUpMediaRouteButton(this, menu, R.id.media_route_menu_item)
+        CastButtonFactory.setUpMediaRouteButton(applicationContext, menu, R.id.media_route)
         return true
     }
 

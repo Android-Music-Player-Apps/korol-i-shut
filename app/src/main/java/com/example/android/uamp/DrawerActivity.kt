@@ -19,21 +19,8 @@ import com.google.android.material.navigation.NavigationView
 
 abstract class DrawerActivity : AppCompatActivity() {
 
-    private var shareActionProvider: ShareActionProvider? = null
-
     lateinit var drawerLayout: DrawerLayout
     lateinit var navigationView: NavigationView
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.toolbar_menu, menu)
-        menu.findItem(R.id.share).also {
-            shareActionProvider = MenuItemCompat.getActionProvider(it) as ShareActionProvider?
-        }
-        val shareIntent = ShareCompat.IntentBuilder.from(this)
-            .setType("text/plain").setText(BuildConfig.URL_TO_SHARE).intent
-        shareActionProvider?.setShareIntent(shareIntent)
-        return super.onCreateOptionsMenu(menu)
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
