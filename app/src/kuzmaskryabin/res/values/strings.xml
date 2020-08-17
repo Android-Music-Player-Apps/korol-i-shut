@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Kuzma Skryabin</string>
+    <string name="official_website_url" translatable="false">https://www.facebook.com/skryabinofficial</string>
+    <string name="link_to_wiki_url" translatable="false">https://uk.m.wikipedia.org/wiki/%D0%A1%D0%BA%D1%80%D1%8F%D0%B1%D1%96%D0%BD_(%D0%B3%D1%83%D1%80%D1%82)</string>
+    <string name="about_project_url" translatable="false">https://android-music-player-apps.github.io/kuzma-skryabin/</string>
+    <string name="privacy_policy_url" translatable="false">https://android-music-player-apps.github.io/kuzma-skryabin/privacy_policy.html</string>
+    <string name="admob_app_id" translatable="false">ca-app-pub-8081141113344620~1185602976</string>
+</resources>
