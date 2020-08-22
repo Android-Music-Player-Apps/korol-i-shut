@@ -31,7 +31,7 @@
     <string name="link_to_wiki">Page on Wikipedia</string>
     <string name="about_project">About project</string>
     <string name="share">Share</string>
-    <string name="privacy_policy">Privacy Policy</string>
+    <string name="privacy_policy" translatable="false">Privacy Policy</string>
     <string name="network_error_message">Music Service Connection Network Failure. \n\nWe apologise for the inconvenience. Help us to improve the service by writing positive feedback on the Google Play market. \n\nThank You!</string>
     <string name="network_error_message_free_plan">We apologise for the inconvenience. \n\nThe current Pricing Plan for this music storage is Free / 0$. According to its specs, there is a limit for Downloading (1 Gb / day). If You see this message, please wait until the next day, when the limit will be restarted. \n\nHelp us to improve the service by writing positive feedback on the Google Play market. Thank You!</string>
 
