@@ -21,9 +21,13 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Decode google-services.json
+      - name: Decode google-services.json (1)
         env:
           GOOGLE_SERVICES_SECRET: ${{ secrets.GOOGLE_SERVICES_SECRET }}
-        run: echo $GOOGLE_SERVICES_SECRET > app/google-services.json
+        run: echo $GOOGLE_SERVICES_SECRET > app/src/korolishut/google-services.json; echo $GOOGLE_SERVICES_SECRET > app/src/tsoikinoband/google-services.json
+      - name: Decode google-services.json (2)
+        env:
+          GOOGLE_SERVICES_SECRET_2: ${{ secrets.GOOGLE_SERVICES_SECRET_2 }}
+        run: echo $GOOGLE_SERVICES_SECRET_2 > app/src/kuzmaskryabin/google-services.json; echo $GOOGLE_SERVICES_SECRET_2 > app/src/sektorgaza/google-services.json
       - name: Build with Gradle
         run: bash ./gradlew build --stacktrace
