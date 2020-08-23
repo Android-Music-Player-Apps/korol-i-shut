@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="banner_now_playing_ad_unit_id" translatable="false">ca-app-pub-8081141113344620/6711872767</string>
+    <string name="inter_media_item_ad_unit_id" translatable="false">ca-app-pub-8081141113344620/1026810554</string>
+    <string name="native_media_item_ad_unit_id" translatable="false">ca-app-pub-8081141113344620/4582912181</string>
+</resources>

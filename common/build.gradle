@@ -55,6 +55,14 @@ android {
             dimension "default"
             buildConfigField "String", "CATALOG_URL", "\"https://firebasestorage.googleapis.com/v0/b/bucket-tsoi-kino/o/catalog.json?alt=media\""
         }
+        sektorgaza {
+            dimension "default"
+            buildConfigField "String", "CATALOG_URL", "\"https://firebasestorage.googleapis.com/v0/b/sektor-gaza/o/catalog.json?alt=media\""
+        }
+        kuzmaskryabin {
+            dimension "default"
+            buildConfigField "String", "CATALOG_URL", "\"https://firebasestorage.googleapis.com/v0/b/kuzma-skryabin.appspot.com/o/catalog.json?alt=media\""
+        }
     }
 }
 

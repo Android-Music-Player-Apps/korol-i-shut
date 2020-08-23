@@ -73,6 +73,16 @@ android {
             applicationId "com.olehka.tsoikinoband"
             buildConfigField "String", "URL_TO_SHARE", "\"https://play.google.com/store/apps/details?id=com.olehka.tsoikinoband\""
         }
+        sektorgaza {
+            dimension "default"
+            applicationId "com.olehka.sektorgaza"
+            buildConfigField "String", "URL_TO_SHARE", "\"https://play.google.com/store/apps/details?id=com.olehka.sektorgaza\""
+        }
+        kuzmaskryabin {
+            dimension "default"
+            applicationId "com.olehka.kuzmaskryabin"
+            buildConfigField "String", "URL_TO_SHARE", "\"https://play.google.com/store/apps/details?id=com.olehka.kuzmaskryabin\""
+        }
     }
 }
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">King &amp; Jester</string>
-    <string name="official_website_url" translatable="false">http://www.korol-i-shut.ru/news/</string>
+    <string name="official_website_url" translatable="false">https://www.facebook.com/korolishut</string>
     <string name="link_to_wiki_url" translatable="false">https://ru.m.wikipedia.org/wiki/%D0%9A%D0%BE%D1%80%D0%BE%D0%BB%D1%8C_%D0%B8_%D0%A8%D1%83%D1%82</string>
     <string name="about_project_url" translatable="false">https://android-music-player-apps.github.io/korol-i-shut/</string>
     <string name="privacy_policy_url" translatable="false">https://android-music-player-apps.github.io/korol-i-shut/privacy_policy.html</string>
