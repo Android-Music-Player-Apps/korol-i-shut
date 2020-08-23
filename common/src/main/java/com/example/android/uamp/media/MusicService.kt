@@ -32,6 +32,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.media.MediaBrowserServiceCompat
+import androidx.media.MediaBrowserServiceCompat.BrowserRoot.EXTRA_RECENT
 import com.example.android.uamp.media.extensions.album
 import com.example.android.uamp.media.extensions.flag
 import com.example.android.uamp.media.extensions.id
@@ -46,6 +47,7 @@ import com.example.android.uamp.media.library.MusicSource
 import com.example.android.uamp.media.library.UAMP_ALBUMS_ROOT
 import com.example.android.uamp.media.library.UAMP_BROWSABLE_ROOT
 import com.example.android.uamp.media.library.UAMP_EMPTY_ROOT
+import com.example.android.uamp.media.library.UAMP_RECENT_ROOT
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ControlDispatcher
 import com.google.android.exoplayer2.ExoPlaybackException
@@ -53,8 +55,8 @@ import com.google.android.exoplayer2.ExoPlayer
 import com.google.android.exoplayer2.Player
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioAttributes
-import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener
 import com.google.android.exoplayer2.ext.cast.CastPlayer
+import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
@@ -101,6 +103,8 @@ open class MusicService : MediaBrowserServiceCompat() {
     protected lateinit var mediaSession: MediaSessionCompat
     protected lateinit var mediaSessionConnector: MediaSessionConnector
     private var currentPlaylistItems: List<MediaMetadataCompat> = emptyList()
+
+    private lateinit var storage: PersistentStorage
 
     /**
      * This must be `by lazy` because the source won't initially be ready.
@@ -212,6 +216,8 @@ open class MusicService : MediaBrowserServiceCompat() {
         notificationManager.showNotificationForPlayer(currentPlayer)
 
         packageValidator = PackageValidator(this, R.xml.allowed_media_browser_callers)
+
+        storage = PersistentStorage.getInstance(applicationContext)
     }
 
     /**
@@ -220,6 +226,7 @@ open class MusicService : MediaBrowserServiceCompat() {
      * playback to continue and allow users to stop it with the notification.
      */
     override fun onTaskRemoved(rootIntent: Intent) {
+        saveRecentSongToStorage()
         super.onTaskRemoved(rootIntent)
 
         /**
@@ -273,8 +280,13 @@ open class MusicService : MediaBrowserServiceCompat() {
         }
 
         return if (isKnownCaller) {
-            // The caller is allowed to browse, so return the root.
-            BrowserRoot(UAMP_ALBUMS_ROOT, rootExtras)
+            /**
+             * By default return the browsable root. Treat the EXTRA_RECENT flag as a special case
+             * and return the recent root instead.
+             */
+            val isRecentRequest = rootHints?.getBoolean(EXTRA_RECENT) ?: false
+            val browserRootPath = if (isRecentRequest) UAMP_RECENT_ROOT else UAMP_ALBUMS_ROOT
+            BrowserRoot(browserRootPath, rootExtras)
         } else {
             /**
              * Unknown caller. There are two main ways to handle this:
@@ -299,27 +311,34 @@ open class MusicService : MediaBrowserServiceCompat() {
         result: Result<List<MediaItem>>
     ) {
 
-        // If the media source is ready, the results will be set synchronously here.
-        val resultsSent = mediaSource.whenReady { successfullyInitialized ->
-            if (successfullyInitialized) {
-                val children = browseTree[parentMediaId]?.map { item ->
-                    MediaItem(item.description, item.flag)
+        /**
+         * If the caller requests the recent root, return the most recently played song.
+         */
+        if (parentMediaId == UAMP_RECENT_ROOT) {
+            result.sendResult(storage.loadRecentSong()?.let { song -> listOf(song) })
+        } else {
+            // If the media source is ready, the results will be set synchronously here.
+            val resultsSent = mediaSource.whenReady { successfullyInitialized ->
+                if (successfullyInitialized) {
+                    val children = browseTree[parentMediaId]?.map { item ->
+                        MediaItem(item.description, item.flag)
+                    }
+                    result.sendResult(children)
+                } else {
+                    mediaSession.sendSessionEvent(NETWORK_FAILURE, null)
+                    result.sendResult(null)
                 }
-                result.sendResult(children)
-            } else {
-                mediaSession.sendSessionEvent(NETWORK_FAILURE, null)
-                result.sendResult(null)
             }
-        }
 
-        // If the results are not ready, the service must "detach" the results before
-        // the method returns. After the source is ready, the lambda above will run,
-        // and the caller will be notified that the results are ready.
-        //
-        // See [MediaItemFragmentViewModel.subscriptionCallback] for how this is passed to the
-        // UI/displayed in the [RecyclerView].
-        if (!resultsSent) {
-            result.detach()
+            // If the results are not ready, the service must "detach" the results before
+            // the method returns. After the source is ready, the lambda above will run,
+            // and the caller will be notified that the results are ready.
+            //
+            // See [MediaItemFragmentViewModel.subscriptionCallback] for how this is passed to the
+            // UI/displayed in the [RecyclerView].
+            if (!resultsSent) {
+                result.detach()
+            }
         }
     }
 
@@ -405,6 +424,21 @@ open class MusicService : MediaBrowserServiceCompat() {
         previousPlayer?.stop(/* reset= */true)
     }
 
+    private fun saveRecentSongToStorage() {
+
+        // Obtain the current song details *before* saving them on a separate thread, otherwise
+        // the current player may have been unloaded by the time the save routine runs.
+        val description = currentPlaylistItems[currentPlayer.currentWindowIndex].description
+        val position = currentPlayer.currentPosition
+
+        serviceScope.launch {
+            storage.saveRecentSong(
+                description,
+                position
+            )
+        }
+    }
+
     private inner class UampCastSessionAvailabilityListener : SessionAvailabilityListener {
 
         /**
@@ -444,7 +478,16 @@ open class MusicService : MediaBrowserServiceCompat() {
                     PlaybackStateCompat.ACTION_PREPARE_FROM_SEARCH or
                     PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH
 
-        override fun onPrepare(playWhenReady: Boolean) = Unit
+        override fun onPrepare(playWhenReady: Boolean) {
+            val recentSong = storage.loadRecentSong()
+            if (recentSong != null) {
+                onPrepareFromMediaId(
+                    recentSong.mediaId!!,
+                    playWhenReady,
+                    recentSong.description.extras
+                )
+            }
+        }
 
         override fun onPrepareFromMediaId(
             mediaId: String,
@@ -459,11 +502,16 @@ open class MusicService : MediaBrowserServiceCompat() {
                     Log.w(TAG, "Content not found: MediaID=$mediaId")
                     // TODO: Notify caller of the error.
                 } else {
+
+                    val playbackStartPositionMs =
+                        extras?.getLong(MEDIA_DESCRIPTION_EXTRAS_START_PLAYBACK_POSITION_MS, C.TIME_UNSET)
+                            ?: C.TIME_UNSET
+
                     preparePlaylist(
                         buildPlaylist(itemToPlay),
                         itemToPlay,
                         playWhenReady,
-                        playbackStartPositionMs = C.TIME_UNSET
+                        playbackStartPositionMs
                     )
                 }
             }
@@ -550,11 +598,20 @@ open class MusicService : MediaBrowserServiceCompat() {
                 Player.STATE_BUFFERING,
                 Player.STATE_READY -> {
                     notificationManager.showNotificationForPlayer(currentPlayer)
-                    // If playback is paused we remove the foreground state which allows the
-                    // notification to be dismissed. An alternative would be to provide a "close"
-                    // button in the notification which stops playback and clears the notification.
                     if (playbackState == Player.STATE_READY) {
-                        if (!playWhenReady) stopForeground(false)
+
+                        // When playing/paused save the current media item in persistent
+                        // storage so that playback can be resumed between device reboots.
+                        // Search for "media resumption" for more information.
+                        saveRecentSongToStorage()
+
+                        if (!playWhenReady) {
+                            // If playback is paused we remove the foreground state which allows the
+                            // notification to be dismissed. An alternative would be to provide a
+                            // "close" button in the notification which stops playback and clears
+                            // the notification.
+                            stopForeground(false)
+                        }
                     }
                 }
                 else -> {
@@ -612,4 +669,7 @@ private const val CONTENT_STYLE_LIST = 1
 private const val CONTENT_STYLE_GRID = 2
 
 private const val UAMP_USER_AGENT = "uamp.next"
+
+val MEDIA_DESCRIPTION_EXTRAS_START_PLAYBACK_POSITION_MS = "playback_start_position_ms"
+
 private const val TAG = "MusicService"
