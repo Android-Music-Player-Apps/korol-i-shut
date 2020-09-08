@@ -24,9 +24,9 @@ android {
     compileSdkVersion rootProject.compileSdkVersion
     defaultConfig {
         applicationId "com.example.android.uamp.next"
-        versionCode 7
-        versionName "0.0"
-        setProperty("archivesBaseName", "app" + "-v" + versionCode + "(" + versionName + ")")
+        versionCode 8
+        versionName "2.1"
+        setProperty("archivesBaseName", "app" + "-v" + versionCode)
 
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
@@ -67,25 +67,21 @@ android {
             dimension "default"
             applicationId "com.olehka.korolishut"
             buildConfigField "String", "URL_TO_SHARE", "\"https://play.google.com/store/apps/details?id=com.olehka.korolishut\""
-            versionName "2.0"
         }
         tsoikinoband {
             dimension "default"
             applicationId "com.olehka.tsoikinoband"
             buildConfigField "String", "URL_TO_SHARE", "\"https://play.google.com/store/apps/details?id=com.olehka.tsoikinoband\""
-            versionName "2.0"
         }
         sektorgaza {
             dimension "default"
             applicationId "com.olehka.sektorgaza"
             buildConfigField "String", "URL_TO_SHARE", "\"https://play.google.com/store/apps/details?id=com.olehka.sektorgaza\""
-            versionName "1.0"
         }
         kuzmaskryabin {
             dimension "default"
             applicationId "com.olehka.kuzmaskryabin"
             buildConfigField "String", "URL_TO_SHARE", "\"https://play.google.com/store/apps/details?id=com.olehka.kuzmaskryabin\""
-            versionName "1.0"
         }
     }
 }

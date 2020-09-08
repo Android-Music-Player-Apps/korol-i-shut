@@ -48,6 +48,7 @@ import com.example.android.uamp.media.library.UAMP_ALBUMS_ROOT
 import com.example.android.uamp.media.library.UAMP_BROWSABLE_ROOT
 import com.example.android.uamp.media.library.UAMP_EMPTY_ROOT
 import com.example.android.uamp.media.library.UAMP_RECENT_ROOT
+import com.example.android.uamp.utils.DownloadUtil
 import com.google.android.exoplayer2.C
 import com.google.android.exoplayer2.ControlDispatcher
 import com.google.android.exoplayer2.ExoPlaybackException
@@ -61,6 +62,7 @@ import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
+import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import com.google.android.gms.cast.MediaQueueItem
 import com.google.android.gms.cast.framework.CastContext
@@ -120,6 +122,13 @@ open class MusicService : MediaBrowserServiceCompat() {
             /* context= */ this,
             Util.getUserAgent(/* context= */ this, UAMP_USER_AGENT), /* listener= */
             null
+        )
+    }
+
+    private val cacheDataSourceFactory: CacheDataSourceFactory by lazy {
+        CacheDataSourceFactory(
+            DownloadUtil.getCache(this),
+            dataSourceFactory
         )
     }
 
@@ -384,7 +393,7 @@ open class MusicService : MediaBrowserServiceCompat() {
         currentPlayer.playWhenReady = playWhenReady
         currentPlayer.stop(/* reset= */ true)
         if (currentPlayer == exoPlayer) {
-            val mediaSource = metadataList.toMediaSource(dataSourceFactory)
+            val mediaSource = metadataList.toMediaSource(cacheDataSourceFactory)
             exoPlayer.prepare(mediaSource)
             exoPlayer.seekTo(initialWindowIndex, playbackStartPositionMs)
         } else /* currentPlayer == castPlayer */ {
