@@ -29,6 +29,7 @@ import android.support.v4.media.session.MediaSessionCompat
 import android.util.Base64
 import android.util.Log
 import androidx.annotation.XmlRes
+import androidx.core.app.NotificationManagerCompat
 import androidx.media.MediaBrowserServiceCompat
 import org.xmlpull.v1.XmlPullParserException
 import java.io.IOException
@@ -47,7 +48,7 @@ import java.security.NoSuchAlgorithmException
  *
  * For more information, see res/xml/allowed_media_browser_callers.xml.
  */
-class PackageValidator(context: Context, @XmlRes xmlResId: Int) {
+internal class PackageValidator(context: Context, @XmlRes xmlResId: Int) {
     private val context: Context
     private val packageManager: PackageManager
 
@@ -124,15 +125,17 @@ class PackageValidator(context: Context, @XmlRes xmlResId: Int) {
              */
             callerPackageInfo.permissions.contains(MEDIA_CONTENT_CONTROL) -> true
             /**
-             * This last permission can be specifically granted to apps, and, in addition to
-             * allowing them to retrieve notifications, it also allows them to connect to an
-             * active [MediaSessionCompat].
-             * As with the above, it's not required to allow apps holding this permission to
-             * connect to your [MediaBrowserServiceCompat], but it does allow easy comparability
+             * If the calling app has a notification listener it is able to retrieve notifications
+             * and can connect to an active [MediaSessionCompat].
+             *
+             * It's not required to allow apps with a notification listener to
+             * connect to your [MediaBrowserServiceCompat], but it does allow easy compatibility
              * with apps such as Wear OS.
              */
-            callerPackageInfo.permissions.contains(BIND_NOTIFICATION_LISTENER_SERVICE) -> true
-            // If none of the pervious checks succeeded, then the caller is unrecognized.
+            NotificationManagerCompat.getEnabledListenerPackages(this.context)
+                .contains(callerPackageInfo.packageName) -> true
+
+            // If none of the previous checks succeeded, then the caller is unrecognized.
             else -> false
         }
 
@@ -193,6 +196,7 @@ class PackageValidator(context: Context, @XmlRes xmlResId: Int) {
      *
      * @return [PackageInfo] for the package name or null if it's not found.
      */
+    @Suppress("deprecation")
     @SuppressLint("PackageManagerGetSignatures")
     private fun getPackageInfo(callingPackage: String): PackageInfo? =
         packageManager.getPackageInfo(
@@ -209,6 +213,7 @@ class PackageValidator(context: Context, @XmlRes xmlResId: Int) {
      * If the app is not found, or if the app does not have exactly one signature, this method
      * returns `null` as the signature.
      */
+    @Suppress("deprecation")
     private fun getSignature(packageInfo: PackageInfo): String? =
         if (packageInfo.signatures == null || packageInfo.signatures.size != 1) {
             // Security best practices dictate that an app should be signed with exactly one (1)

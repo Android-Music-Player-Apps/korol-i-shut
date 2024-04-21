@@ -19,7 +19,10 @@ package com.example.android.uamp
 import android.content.Context
 import android.media.AudioManager
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -44,9 +47,10 @@ import com.google.android.gms.cast.framework.CastContext
 
 class MainActivity : DrawerActivity() {
 
-    private lateinit var viewModel: MainActivityViewModel
+    private val viewModel by viewModels<MainActivityViewModel> {
+        InjectorUtils.provideMainActivityViewModel(this)
+    }
     private lateinit var searchView: SearchView
-
     private var castContext: CastContext? = null
     private var shareActionProvider: ShareActionProvider? = null
 
@@ -74,11 +78,6 @@ class MainActivity : DrawerActivity() {
         // in the app.
         volumeControlStream = AudioManager.STREAM_MUSIC
 
-        viewModel = ViewModelProvider(
-            this, InjectorUtils.provideMainActivityViewModel(this)
-        )
-            .get(MainActivityViewModel::class.java)
-
         /**
          * Observe [MainActivityViewModel.navigateToFragment] for [Event]s that request a
          * fragment swap.
@@ -101,9 +100,7 @@ class MainActivity : DrawerActivity() {
          */
         viewModel.rootMediaId.observe(this,
             Observer<String> { rootMediaId ->
-                if (rootMediaId != null) {
-                    navigateToMediaItem(rootMediaId)
-                }
+                rootMediaId?.let { navigateToMediaItem(it) }
             })
 
         /**
@@ -176,7 +173,7 @@ class MainActivity : DrawerActivity() {
     private fun isRootId(mediaId: String) = mediaId == viewModel.rootMediaId.value
 
     private fun getBrowseFragment(mediaId: String): MediaItemFragment? {
-        return supportFragmentManager.findFragmentByTag(mediaId) as MediaItemFragment?
+        return supportFragmentManager.findFragmentByTag(mediaId) as? MediaItemFragment
     }
 
     private fun initializeMobileAds() = MobileAds.initialize(this) {}

@@ -22,6 +22,7 @@ apply plugin: 'com.google.gms.google-services'  // Google Play services Gradle p
 
 android {
     compileSdkVersion rootProject.compileSdkVersion
+
     defaultConfig {
         applicationId "com.example.android.uamp.next"
         versionCode 8
@@ -39,8 +40,9 @@ android {
             targetCompatibility JavaVersion.VERSION_1_8
         }
         kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_1_8.toString()
+            jvmTarget = "1.8"
         }
+
         vectorDrawables {
             useSupportLibrary true
         }
@@ -87,14 +89,16 @@ android {
 }
 
 dependencies {
+    implementation "com.android.support:multidex:$multidex_version"
+
     implementation project(':common')
     implementation project(':nativetemplates')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     implementation "androidx.core:core-ktx:$androidx_core_ktx_version"
-    implementation "androidx.fragment:fragment-ktx:$androidx_fragment_ktx_version"
     implementation "androidx.appcompat:appcompat:$androidx_app_compat_version"
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
     implementation "androidx.recyclerview:recyclerview:$recycler_view_version"
 
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
