@@ -21,7 +21,7 @@ class WebActivity : DrawerActivity() {
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
         if (intent?.hasExtra(KEY_URI) == true) {
-            webView.loadUrl(intent.getStringExtra(KEY_URI))
+            webView.loadUrl(intent.getStringExtra(KEY_URI)!!)
         }
     }
 
@@ -36,6 +36,6 @@ class WebActivity : DrawerActivity() {
         webView.settings.builtInZoomControls = true
         webView.settings.loadWithOverviewMode = true
         webView.settings.useWideViewPort = true
-        webView.loadUrl(intent.getStringExtra(KEY_URI))
+        webView.loadUrl(intent.getStringExtra(KEY_URI)!!)
     }
 }

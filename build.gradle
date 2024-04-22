@@ -47,7 +47,6 @@ buildscript {
         recycler_view_version = '1.1.0'
         robolectric_version = '4.2'
         test_runner_version = '1.1.0'
-        multidex_version = '2.0.1'
         material_version = '1.2.0'
         firebase_core_version = '17.5.0'
         firebase_ads_version = '19.3.0'

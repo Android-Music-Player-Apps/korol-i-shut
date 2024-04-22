@@ -39,8 +39,6 @@ import com.example.android.uamp.media.extensions.album
 import com.example.android.uamp.media.extensions.flag
 import com.example.android.uamp.media.extensions.id
 import com.example.android.uamp.media.extensions.toMediaItem
-import com.example.android.uamp.media.extensions.toMediaQueueItem
-import com.example.android.uamp.media.extensions.toMediaSource
 import com.example.android.uamp.media.extensions.trackNumber
 import com.example.android.uamp.media.library.AbstractMusicSource
 import com.example.android.uamp.media.library.BrowseTree
@@ -67,8 +65,6 @@ import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
 import com.google.android.exoplayer2.util.Util
 import com.google.android.exoplayer2.util.Util.constrainValue
 import com.google.android.gms.cast.framework.CastContext
@@ -124,21 +120,6 @@ open class MusicService : MediaBrowserServiceCompat() {
      */
     private val browseTree: BrowseTree by lazy {
         BrowseTree(applicationContext, mediaSource)
-    }
-
-    private val dataSourceFactory: DefaultDataSourceFactory by lazy {
-        DefaultDataSourceFactory(
-            /* context= */ this,
-            Util.getUserAgent(/* context= */ this, UAMP_USER_AGENT), /* listener= */
-            null
-        )
-    }
-
-    private val cacheDataSourceFactory: CacheDataSourceFactory by lazy {
-        CacheDataSourceFactory(
-            DownloadUtil.getCache(this),
-            dataSourceFactory
-        )
     }
 
     private var isForegroundService = false
@@ -415,22 +396,6 @@ open class MusicService : MediaBrowserServiceCompat() {
         currentPlayer.setMediaItems(
             metadataList.map { it.toMediaItem() }, initialWindowIndex, playbackStartPositionMs)
         currentPlayer.prepare()
-        currentPlayer.stop(/* reset= */ true)
-        if (currentPlayer == exoPlayer) {
-            val mediaSource = metadataList.toMediaSource(cacheDataSourceFactory)
-            exoPlayer.prepare(mediaSource)
-            exoPlayer.seekTo(initialWindowIndex, playbackStartPositionMs)
-        } else /* currentPlayer == castPlayer */ {
-            val items: Array<MediaQueueItem> = metadataList.map {
-                it.toMediaQueueItem()
-            }.toTypedArray()
-            castPlayer.loadItems(
-                items,
-                initialWindowIndex,
-                playbackStartPositionMs,
-                Player.REPEAT_MODE_OFF
-            )
-        }
     }
 
     private fun switchToPlayer(previousPlayer: Player?, newPlayer: Player) {

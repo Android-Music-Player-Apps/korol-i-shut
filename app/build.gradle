@@ -31,7 +31,6 @@ android {
 
         minSdkVersion rootProject.minSdkVersion
         targetSdkVersion rootProject.targetSdkVersion
-        multiDexEnabled true
 
         buildConfigField "String", "URL_TO_SHARE", "\"https://github.com/android/uamp\""
 
@@ -90,6 +89,8 @@ android {
 
 dependencies {
     implementation "com.android.support:multidex:$multidex_version"
+    testImplementation "com.android.support:multidex:$multidex_version"
+    androidTestImplementation "com.android.support:multidex:$multidex_version"
 
     implementation project(':common')
     implementation project(':nativetemplates')
@@ -103,7 +104,6 @@ dependencies {
 
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
     implementation "androidx.lifecycle:lifecycle-extensions:$arch_lifecycle_version"
-    implementation "androidx.multidex:multidex:$multidex_version"
 
     implementation "com.google.android.material:material:$material_version"
 

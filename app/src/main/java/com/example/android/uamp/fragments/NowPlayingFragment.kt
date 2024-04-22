@@ -94,14 +94,6 @@ class NowPlayingFragment : Fragment() {
         val positionTextView = view.findViewById<TextView>(R.id.position)
                 .apply { text = NowPlayingMetadata.timestampToMSS(context, 0L) }
 
-        // Inject our activity and view models into this fragment
-        mainActivityViewModel = ViewModelProviders
-            .of(context, InjectorUtils.provideMainActivityViewModel(context))
-            .get(MainActivityViewModel::class.java)
-        nowPlayingViewModel = ViewModelProviders
-            .of(context, InjectorUtils.provideNowPlayingFragmentViewModel(context))
-            .get(NowPlayingFragmentViewModel::class.java)
-
         // Attach observers to the LiveData coming from this ViewModel
         nowPlayingViewModel.mediaMetadata.observe(viewLifecycleOwner,
             Observer { mediaItem -> updateUI(view, mediaItem) })
