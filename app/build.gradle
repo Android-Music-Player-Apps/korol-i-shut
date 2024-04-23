@@ -45,6 +45,7 @@ android {
         vectorDrawables {
             useSupportLibrary true
         }
+        multiDexEnabled true
     }
 
     buildFeatures {
@@ -89,7 +90,6 @@ android {
 
 dependencies {
     implementation "com.android.support:multidex:$multidex_version"
-    testImplementation "com.android.support:multidex:$multidex_version"
     androidTestImplementation "com.android.support:multidex:$multidex_version"
 
     implementation project(':common')
