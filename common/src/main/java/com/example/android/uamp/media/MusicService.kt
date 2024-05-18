@@ -18,7 +18,9 @@ package com.example.android.uamp.media
 
 import android.app.Notification
 import android.app.PendingIntent
+import android.content.ComponentName
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.ResultReceiver
@@ -36,8 +38,7 @@ import androidx.media.MediaBrowserServiceCompat.BrowserRoot.EXTRA_RECENT
 import com.example.android.uamp.media.extensions.album
 import com.example.android.uamp.media.extensions.flag
 import com.example.android.uamp.media.extensions.id
-import com.example.android.uamp.media.extensions.toMediaQueueItem
-import com.example.android.uamp.media.extensions.toMediaSource
+import com.example.android.uamp.media.extensions.toMediaItem
 import com.example.android.uamp.media.extensions.trackNumber
 import com.example.android.uamp.media.library.AbstractMusicSource
 import com.example.android.uamp.media.library.BrowseTree
@@ -50,10 +51,13 @@ import com.example.android.uamp.media.library.UAMP_EMPTY_ROOT
 import com.example.android.uamp.media.library.UAMP_RECENT_ROOT
 import com.example.android.uamp.utils.DownloadUtil
 import com.google.android.exoplayer2.C
-import com.google.android.exoplayer2.ControlDispatcher
-import com.google.android.exoplayer2.ExoPlaybackException
 import com.google.android.exoplayer2.ExoPlayer
+import com.google.android.exoplayer2.PlaybackException
 import com.google.android.exoplayer2.Player
+import com.google.android.exoplayer2.Player.EVENT_MEDIA_ITEM_TRANSITION
+import com.google.android.exoplayer2.Player.EVENT_PLAY_WHEN_READY_CHANGED
+import com.google.android.exoplayer2.Player.EVENT_POSITION_DISCONTINUITY
+import com.google.android.exoplayer2.Player.EVENT_TIMELINE_CHANGED
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.audio.AudioAttributes
 import com.google.android.exoplayer2.ext.cast.CastPlayer
@@ -61,16 +65,16 @@ import com.google.android.exoplayer2.ext.cast.SessionAvailabilityListener
 import com.google.android.exoplayer2.ext.mediasession.MediaSessionConnector
 import com.google.android.exoplayer2.ext.mediasession.TimelineQueueNavigator
 import com.google.android.exoplayer2.ui.PlayerNotificationManager
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory
-import com.google.android.exoplayer2.upstream.cache.CacheDataSourceFactory
 import com.google.android.exoplayer2.util.Util
-import com.google.android.gms.cast.MediaQueueItem
+import com.google.android.exoplayer2.util.Util.constrainValue
 import com.google.android.gms.cast.framework.CastContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import kotlin.math.max
+import kotlin.math.min
 
 
 /**
@@ -105,6 +109,7 @@ open class MusicService : MediaBrowserServiceCompat() {
     protected lateinit var mediaSession: MediaSessionCompat
     protected lateinit var mediaSessionConnector: MediaSessionConnector
     private var currentPlaylistItems: List<MediaMetadataCompat> = emptyList()
+    private var currentMediaItemIndex: Int = 0
 
     private lateinit var storage: PersistentStorage
 
@@ -115,21 +120,6 @@ open class MusicService : MediaBrowserServiceCompat() {
      */
     private val browseTree: BrowseTree by lazy {
         BrowseTree(applicationContext, mediaSource)
-    }
-
-    private val dataSourceFactory: DefaultDataSourceFactory by lazy {
-        DefaultDataSourceFactory(
-            /* context= */ this,
-            Util.getUserAgent(/* context= */ this, UAMP_USER_AGENT), /* listener= */
-            null
-        )
-    }
-
-    private val cacheDataSourceFactory: CacheDataSourceFactory by lazy {
-        CacheDataSourceFactory(
-            DownloadUtil.getCache(this),
-            dataSourceFactory
-        )
     }
 
     private var isForegroundService = false
@@ -157,12 +147,23 @@ open class MusicService : MediaBrowserServiceCompat() {
     }
 
     /**
-     * Create a CastPlayer to handle communication with a Cast session.
+     * If Cast is available, create a CastPlayer to handle communication with a Cast session.
      */
-    private val castPlayer: CastPlayer by lazy {
-        CastPlayer(CastContext.getSharedInstance(this)).apply {
-            setSessionAvailabilityListener(UampCastSessionAvailabilityListener())
-            addListener(playerListener)
+    private val castPlayer: CastPlayer? by lazy {
+        try {
+            val castContext = CastContext.getSharedInstance(this)
+            CastPlayer(castContext, CastMediaItemConverter()).apply {
+                setSessionAvailabilityListener(UampCastSessionAvailabilityListener())
+                addListener(playerListener)
+            }
+        } catch (e : Exception) {
+            // We wouldn't normally catch the generic `Exception` however
+            // calling `CastContext.getSharedInstance` can throw various exceptions, all of which
+            // indicate that Cast is unavailable.
+            // Related internal bug b/68009560.
+            Log.i(TAG, "Cast is not available on this device. " +
+                    "Exception thrown when attempting to obtain CastContext. " + e.message)
+            null
         }
     }
 
@@ -182,7 +183,6 @@ open class MusicService : MediaBrowserServiceCompat() {
                 setSessionActivity(sessionActivityPendingIntent)
                 isActive = true
             }
-
         /**
          * In order for [MediaBrowserCompat.ConnectionCallback.onConnected] to be called,
          * a [MediaSessionCompat.Token] needs to be set on the [MediaBrowserServiceCompat].
@@ -220,7 +220,7 @@ open class MusicService : MediaBrowserServiceCompat() {
 
         switchToPlayer(
             previousPlayer = null,
-            newPlayer = if (castPlayer.isCastSessionAvailable) castPlayer else exoPlayer
+            newPlayer = if (castPlayer?.isCastSessionAvailable == true) castPlayer!! else exoPlayer
         )
         notificationManager.showNotificationForPlayer(currentPlayer)
 
@@ -391,22 +391,11 @@ open class MusicService : MediaBrowserServiceCompat() {
         currentPlaylistItems = metadataList
 
         currentPlayer.playWhenReady = playWhenReady
-        currentPlayer.stop(/* reset= */ true)
-        if (currentPlayer == exoPlayer) {
-            val mediaSource = metadataList.toMediaSource(cacheDataSourceFactory)
-            exoPlayer.prepare(mediaSource)
-            exoPlayer.seekTo(initialWindowIndex, playbackStartPositionMs)
-        } else /* currentPlayer == castPlayer */ {
-            val items: Array<MediaQueueItem> = metadataList.map {
-                it.toMediaQueueItem()
-            }.toTypedArray()
-            castPlayer.loadItems(
-                items,
-                initialWindowIndex,
-                playbackStartPositionMs,
-                Player.REPEAT_MODE_OFF
-            )
-        }
+        currentPlayer.stop()
+        // Set playlist and prepare.
+        currentPlayer.setMediaItems(
+            metadataList.map { it.toMediaItem() }, initialWindowIndex, playbackStartPositionMs)
+        currentPlayer.prepare()
     }
 
     private fun switchToPlayer(previousPlayer: Player?, newPlayer: Player) {
@@ -419,11 +408,12 @@ open class MusicService : MediaBrowserServiceCompat() {
             if (currentPlaylistItems.isEmpty()) {
                 // We are joining a playback session. Loading the session from the new player is
                 // not supported, so we stop playback.
-                currentPlayer.stop(/* reset= */true)
+                currentPlayer.clearMediaItems()
+                currentPlayer.stop()
             } else if (playbackState != Player.STATE_IDLE && playbackState != Player.STATE_ENDED) {
                 preparePlaylist(
                     metadataList = currentPlaylistItems,
-                    itemToPlay = currentPlaylistItems[previousPlayer.currentWindowIndex],
+                    itemToPlay = currentPlaylistItems[currentMediaItemIndex],
                     playWhenReady = previousPlayer.playWhenReady,
                     playbackStartPositionMs = previousPlayer.currentPosition
                 )
@@ -437,7 +427,10 @@ open class MusicService : MediaBrowserServiceCompat() {
 
         // Obtain the current song details *before* saving them on a separate thread, otherwise
         // the current player may have been unloaded by the time the save routine runs.
-        val description = currentPlaylistItems[currentPlayer.currentWindowIndex].description
+        if (currentPlaylistItems.isEmpty()) {
+            return
+        }
+        val description = currentPlaylistItems[currentMediaItemIndex].description
         val position = currentPlayer.currentPosition
 
         serviceScope.launch {
@@ -455,7 +448,7 @@ open class MusicService : MediaBrowserServiceCompat() {
          * remote Cast receiver rather than play audio locally.
          */
         override fun onCastSessionAvailable() {
-            switchToPlayer(currentPlayer, castPlayer)
+            switchToPlayer(currentPlayer, castPlayer!!)
         }
 
         /**
@@ -469,8 +462,12 @@ open class MusicService : MediaBrowserServiceCompat() {
     private inner class UampQueueNavigator(
         mediaSession: MediaSessionCompat
     ) : TimelineQueueNavigator(mediaSession) {
-        override fun getMediaDescription(player: Player, windowIndex: Int): MediaDescriptionCompat =
-            currentPlaylistItems[windowIndex].description
+        override fun getMediaDescription(player: Player, windowIndex: Int): MediaDescriptionCompat {
+            if (windowIndex < currentPlaylistItems.size) {
+                return currentPlaylistItems[windowIndex].description
+            }
+            return MediaDescriptionCompat.Builder().build()
+        }
     }
 
     private inner class UampPlaybackPreparer : MediaSessionConnector.PlaybackPreparer {
@@ -488,14 +485,12 @@ open class MusicService : MediaBrowserServiceCompat() {
                     PlaybackStateCompat.ACTION_PLAY_FROM_SEARCH
 
         override fun onPrepare(playWhenReady: Boolean) {
-            val recentSong = storage.loadRecentSong()
-            if (recentSong != null) {
-                onPrepareFromMediaId(
-                    recentSong.mediaId!!,
-                    playWhenReady,
-                    recentSong.description.extras
-                )
-            }
+            val recentSong = storage.loadRecentSong() ?: return
+            onPrepareFromMediaId(
+                recentSong.mediaId!!,
+                playWhenReady,
+                recentSong.description.extras
+            )
         }
 
         override fun onPrepareFromMediaId(
@@ -552,7 +547,6 @@ open class MusicService : MediaBrowserServiceCompat() {
 
         override fun onCommand(
             player: Player,
-            controlDispatcher: ControlDispatcher,
             command: String,
             extras: Bundle?,
             cb: ResultReceiver?
@@ -601,7 +595,8 @@ open class MusicService : MediaBrowserServiceCompat() {
     /**
      * Listen for events from ExoPlayer.
      */
-    private inner class PlayerEventListener : Player.EventListener {
+    private inner class PlayerEventListener : Player.Listener {
+
         override fun onPlayerStateChanged(playWhenReady: Boolean, playbackState: Int) {
             when (playbackState) {
                 Player.STATE_BUFFERING,
@@ -620,6 +615,7 @@ open class MusicService : MediaBrowserServiceCompat() {
                             // "close" button in the notification which stops playback and clears
                             // the notification.
                             stopForeground(false)
+                            isForegroundService = false
                         }
                     }
                 }
@@ -629,32 +625,26 @@ open class MusicService : MediaBrowserServiceCompat() {
             }
         }
 
-        override fun onPlayerError(error: ExoPlaybackException) {
+        override fun onEvents(player: Player, events: Player.Events) {
+            if (events.contains(EVENT_POSITION_DISCONTINUITY)
+                || events.contains(EVENT_MEDIA_ITEM_TRANSITION)
+                || events.contains(EVENT_PLAY_WHEN_READY_CHANGED)) {
+                currentMediaItemIndex = if (currentPlaylistItems.isNotEmpty()) {
+                    constrainValue(
+                        player.currentMediaItemIndex,
+                        /* min= */ 0,
+                        /* max= */ currentPlaylistItems.size - 1
+                    )
+                } else 0
+            }
+        }
+
+        override fun onPlayerError(error: PlaybackException) {
             var message = R.string.generic_error;
-            when (error.type) {
-                // If the data from MediaSource object could not be loaded the Exoplayer raises
-                // a type_source error.
-                // An error message is printed to UI via Toast message to inform the user.
-                ExoPlaybackException.TYPE_SOURCE -> {
-                    message = R.string.error_media_not_found;
-                    Log.e(TAG, "TYPE_SOURCE: " + error.sourceException.message)
-                }
-                // If the error occurs in a render component, Exoplayer raises a type_remote error.
-                ExoPlaybackException.TYPE_RENDERER -> {
-                    Log.e(TAG, "TYPE_RENDERER: " + error.rendererException.message)
-                }
-                // If occurs an unexpected RuntimeException Exoplayer raises a type_unexpected error.
-                ExoPlaybackException.TYPE_UNEXPECTED -> {
-                    Log.e(TAG, "TYPE_UNEXPECTED: " + error.unexpectedException.message)
-                }
-                // Occurs when there is a OutOfMemory error.
-                ExoPlaybackException.TYPE_OUT_OF_MEMORY -> {
-                    Log.e(TAG, "TYPE_OUT_OF_MEMORY: " + error.outOfMemoryError.message)
-                }
-                // If the error occurs in a remote component, Exoplayer raises a type_remote error.
-                ExoPlaybackException.TYPE_REMOTE -> {
-                    Log.e(TAG, "TYPE_REMOTE: " + error.message)
-                }
+            Log.e(TAG, "Player error: " + error.errorCodeName + " (" + error.errorCode + ")");
+            if (error.errorCode == PlaybackException.ERROR_CODE_IO_BAD_HTTP_STATUS
+                || error.errorCode == PlaybackException.ERROR_CODE_IO_FILE_NOT_FOUND) {
+                message = R.string.error_media_not_found;
             }
             Toast.makeText(
                 applicationContext,

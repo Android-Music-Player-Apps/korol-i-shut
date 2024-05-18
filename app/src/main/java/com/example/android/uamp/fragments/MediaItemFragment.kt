@@ -21,11 +21,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import com.example.android.uamp.MediaItemAdapter
 import com.example.android.uamp.MediaItemData
 import com.example.android.uamp.R
-import com.example.android.uamp.ads.AdMediaItemAdapter
 import com.example.android.uamp.databinding.FragmentMediaitemListBinding
 import com.example.android.uamp.utils.InjectorUtils
 import com.example.android.uamp.viewmodels.MainActivityViewModel
@@ -39,20 +40,20 @@ import com.google.android.gms.ads.InterstitialAd
  * A fragment representing a list of MediaItems.
  */
 class MediaItemFragment : Fragment() {
+    private val mainActivityViewModel by activityViewModels<MainActivityViewModel> {
+        InjectorUtils.provideMainActivityViewModel(requireContext())
+    }
+    private val mediaItemFragmentViewModel by viewModels<MediaItemFragmentViewModel> {
+        InjectorUtils.provideMediaItemFragmentViewModel(requireContext(), mediaId)
+    }
+
     private lateinit var mediaId: String
-    private lateinit var mainActivityViewModel: MainActivityViewModel
-    private lateinit var mediaItemFragmentViewModel: MediaItemFragmentViewModel
     private lateinit var binding: FragmentMediaitemListBinding
     private lateinit var interstitialAd: InterstitialAd
     private lateinit var clickedItem: MediaItemData
 
-    private val listAdapter = AdMediaItemAdapter { clickedItem ->
-        this.clickedItem = clickedItem
-        if (::interstitialAd.isInitialized && interstitialAd.isLoaded) {
-            interstitialAd.show()
-        } else {
-            startNextScreen()
-        }
+    private val listAdapter = MediaItemAdapter { clickedItem ->
+        mainActivityViewModel.mediaItemClicked(clickedItem)
     }
 
     companion object {
@@ -78,30 +79,24 @@ class MediaItemFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         // Always true, but lets lint know that as well.
-        val context = activity ?: return
         mediaId = arguments?.getString(MEDIA_ID_ARG) ?: return
 
-        mainActivityViewModel = ViewModelProviders
-            .of(context, InjectorUtils.provideMainActivityViewModel(context))
-            .get(MainActivityViewModel::class.java)
-
-        mediaItemFragmentViewModel = ViewModelProviders
-            .of(this, InjectorUtils.provideMediaItemFragmentViewModel(context, mediaId))
-            .get(MediaItemFragmentViewModel::class.java)
-
         mediaItemFragmentViewModel.mediaItems.observe(viewLifecycleOwner,
-                Observer { list ->
-                    binding.loadingSpinner.visibility =
-                            if (list?.isNotEmpty() == true) View.GONE else View.VISIBLE
-                    listAdapter.setData(list)
-                })
+            Observer { list ->
+                binding.loadingSpinner.visibility =
+                    if (list?.isNotEmpty() == true) View.GONE else View.VISIBLE
+                listAdapter.submitList(list)
+            })
         mediaItemFragmentViewModel.networkError.observe(viewLifecycleOwner,
-                Observer { error ->
-                    binding.networkError.visibility = if (error) View.VISIBLE else View.GONE
-                    if (error) {
-                        binding.loadingSpinner.visibility = View.GONE
-                    }
-                })
+            Observer { error ->
+                if (error) {
+                    binding.loadingSpinner.visibility = View.GONE
+                    binding.networkError.visibility = View.VISIBLE
+                } else {
+                    binding.networkError.visibility = View.GONE
+                }
+            })
+
         mainActivityViewModel.searchQuery.observe(viewLifecycleOwner,
             Observer { query ->
                 mediaItemFragmentViewModel.search(query)
@@ -122,7 +117,6 @@ class MediaItemFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        listAdapter.destroyNativeAd()
         super.onDestroy()
     }
 
@@ -152,10 +146,6 @@ class MediaItemFragment : Fragment() {
                 unifiedNativeAd.destroy()
                 return@forUnifiedNativeAd
             }
-            // You must call destroy on old ads when you are done with them,
-            // otherwise you will have a memory leak.
-            listAdapter.destroyNativeAd()
-            listAdapter.setNativeAd(unifiedNativeAd)
         }
         val adLoader = builder.build()
         adLoader.loadAd(AdRequest.Builder().build())
