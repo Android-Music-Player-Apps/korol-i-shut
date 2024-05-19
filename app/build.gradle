@@ -25,8 +25,8 @@ android {
 
     defaultConfig {
         applicationId "com.example.android.uamp.next"
-        versionCode 8
-        versionName "2.1"
+        versionCode 10
+        versionName "2024.1"
         setProperty("archivesBaseName", "app" + "-v" + versionCode)
 
         minSdkVersion rootProject.minSdkVersion
