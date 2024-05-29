@@ -18,7 +18,6 @@ package com.example.android.uamp.fragments
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,10 +33,6 @@ import com.example.android.uamp.utils.InjectorUtils
 import com.example.android.uamp.viewmodels.MainActivityViewModel
 import com.example.android.uamp.viewmodels.NowPlayingFragmentViewModel
 import com.example.android.uamp.viewmodels.NowPlayingFragmentViewModel.NowPlayingMetadata
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdSize
-import com.google.android.gms.ads.AdView
-import kotlinx.android.synthetic.main.fragment_nowplaying.adContainer
 
 
 /**
@@ -50,29 +45,7 @@ class NowPlayingFragment : Fragment() {
     private val nowPlayingViewModel by viewModels<NowPlayingFragmentViewModel> {
         InjectorUtils.provideNowPlayingFragmentViewModel(requireContext())
     }
-    private lateinit var adView: AdView
-
     lateinit var binding: FragmentNowplayingBinding
-
-    private var initialLayoutComplete = false
-    // Determine the screen width (less decorations) to use for the ad width.
-    // If the ad hasn't been laid out, default to the full screen width.
-    private val adSize: AdSize
-        get() {
-            val display = activity?.windowManager?.defaultDisplay
-            val outMetrics = DisplayMetrics()
-            display?.getMetrics(outMetrics)
-
-            val density = outMetrics.density
-
-            var adWidthPixels = adContainer.width.toFloat()
-            if (adWidthPixels == 0f) {
-                adWidthPixels = outMetrics.widthPixels.toFloat()
-            }
-
-            val adWidth = (adWidthPixels / density).toInt()
-            return AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(context, adWidth)
-        }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -120,26 +93,8 @@ class NowPlayingFragment : Fragment() {
         binding.duration.text = NowPlayingMetadata.timestampToMSS(context, 0L)
         binding.position.text = NowPlayingMetadata.timestampToMSS(context, 0L)
 
-        // Initialize banner ad
-        initAdaptiveBannerAd()
-
         // Clear focus
         mainActivityViewModel.clearSearchFocus()
-    }
-
-    override fun onPause() {
-        adView.pause()
-        super.onPause()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        adView.resume()
-    }
-
-    override fun onDestroy() {
-        adView.destroy()
-        super.onDestroy()
     }
 
     /**
@@ -158,35 +113,7 @@ class NowPlayingFragment : Fragment() {
         duration.text = metadata.duration
     }
 
-    private fun initAdaptiveBannerAd() {
-        adView = AdView(context)
-        adContainer.addView(adView)
-
-        // Since we're loading the banner based on the adContainerView size, we need to wait
-        // until this view is laid out before we can get the width.
-        adContainer.viewTreeObserver.addOnGlobalLayoutListener {
-            if (!initialLayoutComplete) {
-                initialLayoutComplete = true
-                loadBanner()
-            }
-        }
-    }
-
-    private fun loadBanner() {
-        adView.adUnitId = getString(R.string.banner_now_playing_ad_unit_id)
-        adView.adSize = adSize
-
-        // Create an ad request.
-        val adRequest = AdRequest.Builder().build()
-
-        // Start loading the ad in the background.
-        adView.loadAd(adRequest)
-    }
-
     companion object {
         fun newInstance() = NowPlayingFragment()
     }
 }
-
-// This is an ad unit ID for a test ad. Replace with your own banner ad unit ID.
-private const val BANNER_AD_UNIT_ID = "ca-app-pub-3940256099942544/9214589741"
