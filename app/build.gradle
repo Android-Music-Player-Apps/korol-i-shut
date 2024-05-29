@@ -93,8 +93,6 @@ dependencies {
     androidTestImplementation "com.android.support:multidex:$multidex_version"
 
     implementation project(':common')
-    implementation project(':nativetemplates')
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     implementation "androidx.core:core-ktx:$androidx_core_ktx_version"
