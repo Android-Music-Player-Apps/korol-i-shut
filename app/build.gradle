@@ -25,8 +25,8 @@ android {
 
     defaultConfig {
         applicationId "com.example.android.uamp.next"
-        versionCode 10
-        versionName "2024.1"
+        versionCode 12
+        versionName "2024.2"
         setProperty("archivesBaseName", "app" + "-v" + versionCode)
 
         minSdkVersion rootProject.minSdkVersion
@@ -93,8 +93,6 @@ dependencies {
     androidTestImplementation "com.android.support:multidex:$multidex_version"
 
     implementation project(':common')
-    implementation project(':nativetemplates')
-
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     implementation "androidx.core:core-ktx:$androidx_core_ktx_version"
@@ -110,7 +108,4 @@ dependencies {
     // Glide dependencies
     implementation "com.github.bumptech.glide:glide:$glide_version"
     kapt "com.github.bumptech.glide:compiler:$glide_version"
-
-    implementation "com.google.firebase:firebase-core:$firebase_core_version"
-    implementation "com.google.firebase:firebase-ads:$firebase_ads_version"
 }

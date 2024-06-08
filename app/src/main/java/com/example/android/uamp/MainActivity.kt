@@ -19,10 +19,8 @@ package com.example.android.uamp
 import android.content.Context
 import android.media.AudioManager
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -32,15 +30,11 @@ import androidx.appcompat.widget.ShareActionProvider
 import androidx.core.app.ShareCompat
 import androidx.core.view.MenuItemCompat
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.android.uamp.fragments.MediaItemFragment
 import com.example.android.uamp.media.MusicService
 import com.example.android.uamp.utils.Event
 import com.example.android.uamp.utils.InjectorUtils
 import com.example.android.uamp.viewmodels.MainActivityViewModel
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
-import com.google.android.gms.ads.RequestConfiguration
 import com.google.android.gms.cast.framework.CastButtonFactory
 import com.google.android.gms.cast.framework.CastContext
 
@@ -65,10 +59,6 @@ class MainActivity : DrawerActivity() {
         setContentView(R.layout.activity_main)
         setToolbar()
         setSearchView()
-
-        // Initialize the Mobile Ads SDK.
-        initializeMobileAds()
-        setMobileAdsConfig()
 
         drawerLayout = findViewById(R.id.drawer_layout)
         navigationView = findViewById(R.id.nav_view)
@@ -174,20 +164,6 @@ class MainActivity : DrawerActivity() {
 
     private fun getBrowseFragment(mediaId: String): MediaItemFragment? {
         return supportFragmentManager.findFragmentByTag(mediaId) as? MediaItemFragment
-    }
-
-    private fun initializeMobileAds() = MobileAds.initialize(this) {}
-
-    private fun setMobileAdsConfig() {
-        // Set your test devices. Check your logcat output for the hashed device ID to
-        // get test ads on a physical device. e.g.
-        // "Use RequestConfiguration.Builder().setTestDeviceIds(Arrays.asList("ABCDEF012345"))
-        // to get test ads on this device."
-        MobileAds.setRequestConfiguration(
-            RequestConfiguration.Builder()
-                .setTestDeviceIds(listOf(AdRequest.DEVICE_ID_EMULATOR))
-                .build()
-        )
     }
 
     private fun setSearchView() {
