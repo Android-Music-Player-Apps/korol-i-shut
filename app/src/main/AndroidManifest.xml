@@ -33,9 +33,9 @@
         <dist:module dist:instant="true" />
 
         <!-- Declare that UAMP supports Android Auto. -->
-        <meta-data
-            android:name="com.google.android.gms.car.application"
-            android:resource="@xml/automotive_app_desc" />
+<!--        <meta-data-->
+<!--            android:name="com.google.android.gms.car.application"-->
+<!--            android:resource="@xml/automotive_app_desc" />-->
 
         <!-- Declare that UAMP supports Cast. -->
         <meta-data
