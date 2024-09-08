@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 
 import io
 import os
@@ -12,10 +13,10 @@ from mutagen.mp3 import MP3
 ARTIST = "Сектор Газа"
 GENRE = "Hard Rock"
 SITE = "https://www.sektorgaza.net/"
-URL_PREFIX = "https://firebasestorage.googleapis.com/v0/b/sektor-gaza/o/"
+URL_PREFIX = "https://firebasestorage.googleapis.com/v0/b/my-android-apps-sektor-gaza.appspot.com/o/"
 URL_SUFFIX = "?alt=media"
 IMAGE_COVER = "Cover.jpg"
-LOCAL_PATH = "/Users/olehka/Desktop/Media/Music/Сектор Газа/Альбомы/Коллекция (1990-1997)/"
+LOCAL_PATH = "/Volumes/Kingston240/Disk/music/Сектор Газа/Альбомы/Коллекция (1990-1997)/"
 ID_PREFIX = "sektor-gaza-id"
 
 track_dict = OrderedDict()
