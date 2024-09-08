@@ -54,7 +54,7 @@ android {
         }
         tsoikinoband {
             dimension "default"
-            buildConfigField "String", "CATALOG_URL", "\"https://firebasestorage.googleapis.com/v0/b/bucket-tsoi-kino/o/catalog-v2.json?alt=media\""
+            buildConfigField "String", "CATALOG_URL", "\"https://firebasestorage.googleapis.com/v0/b/my-android-apps-tsoi-kino.appspot.com/o/catalog-v3.json?alt=media\""
         }
         sektorgaza {
             dimension "default"

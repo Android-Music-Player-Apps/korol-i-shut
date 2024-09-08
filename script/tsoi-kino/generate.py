@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+#!/usr/bin/env python3
 
 import io
 import os
@@ -12,11 +13,11 @@ from mutagen.mp3 import MP3
 ARTIST = "Виктор Цой - Кино"
 GENRE = "Post Punk"
 SITE = "https://www.kinomannia.ru/"
-URL_PREFIX = "https://firebasestorage.googleapis.com/v0/b/bucket-tsoi-kino/o/"
+URL_PREFIX = "https://firebasestorage.googleapis.com/v0/b/my-android-apps-tsoi-kino.appspot.com/o/"
 URL_SUFFIX = "?alt=media"
 IMAGE_COVER = "front.jpg"
-LOCAL_PATH = "/Users/olehka/Desktop/Media/Music/Кино/2012 - Атаман/"
-ID_PREFIX = "tsoi-ataman-id"
+LOCAL_PATH = "/Volumes/Kingston240/Disk/music/Кино/Кино (Виктор Цой) - Дискография (1982-1990)/1982 - 45/"
+ID_PREFIX = "tsoi-fortyfive-id"
 
 track_dict = OrderedDict()
 track_dict['id'] = ''
