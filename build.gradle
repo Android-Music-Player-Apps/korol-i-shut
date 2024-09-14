@@ -19,9 +19,9 @@
 buildscript {
     ext {
         // App SDK versions.
-        compileSdkVersion = 33
+        compileSdkVersion = 34
         minSdkVersion = 19
-        targetSdkVersion = 33
+        targetSdkVersion = 34
 
         // Dependency versions.
         androidx_app_compat_version = '1.2.0'
