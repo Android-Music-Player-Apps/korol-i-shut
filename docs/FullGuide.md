@@ -2,7 +2,7 @@
 
 The Universal Android Music Player (UAMP) is an example music player app for Android written in [Kotlin](https://kotlinlang.org/). It supports many features including background playback, audio focus handling, multiple platforms (like Wear, TV and Auto) and assistant integration. 
 
-It loads a [music catalog](https://storage.googleapis.com/uamp/catalog.json) from a remote server and allows the user to browse the albums and songs. Tapping on a song will play it through connected speakers or headphones. Under the hood it uses [ExoPlayer](https://exoplayer.dev/).
+It loads a [music catalog](https://storage.googleapis.com/androiddevelopers/samples_assets/uamp/catalog.json) from a remote server and allows the user to browse the albums and songs. Tapping on a song will play it through connected speakers or headphones. Under the hood it uses [ExoPlayer](https://exoplayer.dev/).
 
 If your app's primary goal is to play audio, UAMP is a good place to start. 
 
@@ -36,7 +36,7 @@ MusicService is responsible for:
 *   the audio player (provided by [ExoPlayer](https://exoplayer.dev/))
 *   a [media session](https://developer.android.com/guide/topics/media-apps/working-with-a-media-session) and objects to communicate with it 
 *   maintaining a [notification](https://developer.android.com/guide/topics/ui/notifiers/notifications) which displays information and controls for the current media
-*   loading [the media catalog](https://storage.googleapis.com/uamp/catalog.json) (a JSON file) from a remote URI and providing it to MediaBrowser clients
+*   loading [the media catalog](https://storage.googleapis.com/androiddevelopers/samples_assets/uamp/catalog.json) (a JSON file) from a remote URI and providing it to MediaBrowser clients
 
 By keeping the objects responsible for audio playback inside a service it allows audio to be played in the background, decoupling playback from the app's UI.
 
